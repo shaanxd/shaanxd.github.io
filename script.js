@@ -13,9 +13,9 @@ function color(bColor, fColor){
 function changeTheme(event){
     var noRedirect = '.center-div *';
     if (!event.target.matches(noRedirect)) {
-        var mrandom = getRandom(colorlist.length-1);
+        var mrandom = getRandom(colorlist.length);
         while(mrandom === currentcolor){
-            mrandom = getRandom(colorlist.length-1);
+            mrandom = getRandom(colorlist.length);
         }
         background.style.backgroundColor = colorlist[mrandom].bColor;
         for(var i=0; i< fonts.length; i++){
@@ -37,9 +37,6 @@ function getRandom(max){
 
 colorlist.push(new color("#1E1E1E","#FF6600"));
 colorlist.push(new color("#8B0000","#FFFFFF"));
-colorlist.push(new color("#FFA500","#000000"));
-colorlist.push(new color("#FF6600","#1E1E1E"));
-colorlist.push(new color("#FFFFFF","#8B0000"));
 colorlist.push(new color("#000000","#FFA500"));
 
 document.getElementById("background").addEventListener('click',changeTheme);
