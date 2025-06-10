@@ -136,13 +136,30 @@ export const createDialogBox = (
   });
 
   let options: GameObj;
-
+  let next: GameObj;
   let timers: TimerController[];
 
   const talk = () => {
     const current = lines[idx];
 
     if (current) {
+      next?.destroy();
+      if (lines[idx + 1]) {
+        next = container.add([
+          context.sprite("icons", { frame: 1 }),
+          context.pos(
+            actualWidth - PIXELS_PER_TILE * 0.75,
+            container.height - PIXELS_PER_TILE * 0.75
+          ),
+          context.anchor("botright"),
+          context.area(),
+        ]);
+        next.onClick(() => {
+          timers?.forEach((timer) => timer.cancel());
+          idx += 1;
+          talk();
+        });
+      }
       dialogText.text = "";
       options?.destroy();
       timers = render(dialogText, current.line);
@@ -223,7 +240,6 @@ export const createDialogBox = (
   container.onKeyPress("space", () => {
     timers?.forEach((timer) => timer.cancel());
     idx += 1;
-
     talk();
   });
 
