@@ -5,6 +5,7 @@ import {
   TimerController,
   Vec2,
   Key,
+  MouseButton,
 } from "kaplay";
 
 import {
@@ -44,8 +45,10 @@ class Player {
   hitbox: GameObj;
   state: PlayerState;
   idleTimer: TimerController | undefined;
+  scale: number;
 
-  constructor() {
+  constructor(scale: number) {
+    this.scale = scale;
     this.state = PLAYER_DEFAULT_STATE;
     this.character = this.sprite();
     this.hitbox = this.area();
@@ -58,7 +61,8 @@ class Player {
 
     this.character.onKeyRelease((k) => this.onKeyRelease(k));
     this.character.onDestroy(() => this.onDestroy());
-    this.character.onMouseDown(() => this.onMouseDown());
+    this.character.onMouseDown((btn) => this.onMouseDown(btn));
+    this.character.onMouseRelease((btn) => this.onMouseRelease(btn));
 
     this.idle();
     this.bore();
@@ -89,7 +93,63 @@ class Player {
     ]);
   }
 
-  private onMouseDown() {}
+  private onMouseDown(btn: MouseButton) {
+    if (btn !== "left") {
+      return;
+    }
+    const state = this.state;
+
+    if (state.isInDialog || state.isKeyboardMoving) {
+      return;
+    }
+    state.isMouseMoving = true;
+
+    const worldMousePos = context.toWorld(context.mousePos());
+    const scaledWorldMousePos = context.vec2(
+      worldMousePos.x / this.scale,
+      worldMousePos.y / this.scale
+    );
+    this.character.moveTo(scaledWorldMousePos, PLAYER_DEFAULT_SPEED);
+
+    const angle = this.character.pos.angle(scaledWorldMousePos);
+
+    const lowerBound = 50;
+    const upperBound = 125;
+
+    let animation;
+
+    if (angle > lowerBound && angle < upperBound) {
+      animation = PlayerAnimation.WalkUp;
+    }
+
+    if (angle < -lowerBound && angle > -upperBound) {
+      animation = PlayerAnimation.WalkDown;
+    }
+
+    if (Math.abs(angle) > upperBound) {
+      animation = PlayerAnimation.WalkSide;
+      this.character.flipX = false;
+    }
+
+    if (Math.abs(angle) < lowerBound) {
+      animation = PlayerAnimation.WalkSide;
+      this.character.flipX = true;
+    }
+
+    if (animation && this.character.getCurAnim()?.name !== animation) {
+      this.idleTimer?.cancel?.();
+      this.character.play(animation);
+    }
+  }
+
+  private onMouseRelease(btn: MouseButton) {
+    if (btn !== "left") {
+      return;
+    }
+    this.state.isMouseMoving = false;
+    this.idle();
+    this.bore();
+  }
 
   private onKeyDown(key: string) {
     const state = this.state;

@@ -152,7 +152,6 @@ const initGame = () => {
   });
 
   context.setBackground(context.Color.fromHex("#311047"));
-  context.loadFont("monogram", "fonts/monogram.ttf");
   context.loadFont("medodica", "fonts/medodica.otf");
 
   context.scene(Scene.Apartment, apartment);

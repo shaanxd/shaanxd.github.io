@@ -47,7 +47,7 @@ const apartment = async ({
     context.scale(scale),
   ]);
 
-  const player = new Player();
+  const player = new Player(scale);
   map.add(player.character);
 
   for (const layer of data.layers) {
