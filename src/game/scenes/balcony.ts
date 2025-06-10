@@ -48,7 +48,7 @@ const balcony = async () => {
     context.z(2),
   ]);
 
-  const player = new Player();
+  const player = new Player(scale);
 
   balcony.add(player.character);
 
