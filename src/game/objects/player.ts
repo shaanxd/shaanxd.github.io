@@ -118,21 +118,28 @@ class Player {
 
     let animation;
 
+    state.direction.x = 0;
+    state.direction.y = 0;
+
     if (angle > lowerBound && angle < upperBound) {
       animation = PlayerAnimation.WalkUp;
+      state.direction.y = -1;
     }
 
     if (angle < -lowerBound && angle > -upperBound) {
       animation = PlayerAnimation.WalkDown;
+      state.direction.y = 1;
     }
 
     if (Math.abs(angle) > upperBound) {
       animation = PlayerAnimation.WalkSide;
+      state.direction.x = 1;
       this.character.flipX = false;
     }
 
     if (Math.abs(angle) < lowerBound) {
       animation = PlayerAnimation.WalkSide;
+      state.direction.x = -1;
       this.character.flipX = true;
     }
 

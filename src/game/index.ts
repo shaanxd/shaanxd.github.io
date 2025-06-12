@@ -65,7 +65,7 @@ const initGame = () => {
               { name: PortraitAnimation.Disagree, values: [18, 26] },
             ],
             {
-              speed: 5,
+              speed: 10,
             }
           )
         );
@@ -80,7 +80,7 @@ const initGame = () => {
         { name: DoorAnimation.Open, values: [0, 4] },
         { name: DoorAnimation.Closed, values: [4, 0] },
       ],
-      {}
+      { speed: 10 }
     ),
   });
 

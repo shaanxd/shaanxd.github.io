@@ -18,5 +18,6 @@
   "settings.music": "Música",
   "settings.sfx": "Efectos de sonido",
   "settings.settings": "Configuración",
-  "settings.changeLanguage": "Cambiar idioma"
+  "settings.changeLanguage": "Cambiar idioma",
+  "settings.close": "Cerrar"
 }

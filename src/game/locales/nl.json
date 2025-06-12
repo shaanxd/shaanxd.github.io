@@ -18,5 +18,6 @@
   "settings.music": "Muziek",
   "settings.sfx": "Geluidseffecten",
   "settings.settings": "Instellingen",
-  "settings.changeLanguage": "Taal wijzigen"
+  "settings.changeLanguage": "Taal wijzigen",
+  "settings.close": "Sluiten"
 }

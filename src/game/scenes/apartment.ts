@@ -37,7 +37,7 @@ const DEFAULT_APARTMENT_PARAMS: ApartmentParams = {
 const apartment = async ({
   spawn,
 }: ApartmentParams = DEFAULT_APARTMENT_PARAMS) => {
-  const scale = (await getSpriteScale("apartment")) * 1.25;
+  const scale = await getSpriteScale("apartment");
 
   const data = await (await fetch("./maps/apartment.json")).json();
 

@@ -120,6 +120,8 @@ class UI {
       context.area(),
     ]);
 
+    this.settings.onKeyDown("escape", () => this.toggleSettings());
+
     for (const layer of layers) {
       if (!layer.objects) {
         continue;
@@ -271,7 +273,7 @@ class UI {
     ]);
 
     parent.add([
-      context.text("Close", {
+      context.text(LocaleService.getText("settings.close"), {
         font: "medodica",
         size: FONT_SIZE,
       }),
