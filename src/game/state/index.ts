@@ -2,6 +2,7 @@ import { Locales } from "../enums";
 import { getFromStorage, putToStorage } from "../utils/storage";
 
 type State = {
+  introduced: boolean;
   locale: Locales;
   sfxEnabled: boolean;
   musicEnabled: boolean;
@@ -18,6 +19,7 @@ const StateService = (function () {
         state = JSON.parse(fromStorage);
       } else {
         state = {
+          introduced: false,
           locale: Locales.En,
           sfxEnabled: false,
           musicEnabled: false,

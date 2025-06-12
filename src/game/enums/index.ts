@@ -99,13 +99,6 @@ export enum PortraitAnimation {
   Disagree = "Disagree",
 }
 
-export enum StorageKeys {
-  Introduction = "INTRODUCTION",
-  Locale = "LOCALE",
-  SfxEnabled = "SFX_ENABLED",
-  MusicEnabled = "MUSIC_ENABLED",
-}
-
 export enum Locales {
   En = "En",
   De = "De",

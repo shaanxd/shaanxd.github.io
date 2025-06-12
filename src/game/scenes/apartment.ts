@@ -12,7 +12,6 @@ import {
   Interactable,
   Interaction,
   PlayerSpawn,
-  StorageKeys,
 } from "../enums";
 import dialog from "../dialog";
 import Animal from "../objects/animal";
@@ -24,7 +23,7 @@ import UI from "../objects/ui";
 import { Point } from "../types";
 import { createDialogBox } from "../ui/dialog";
 import { getSpriteScale } from "../utils/sprite";
-import { getFromStorage, putToStorage } from "../utils/storage";
+import StateService from "../state";
 
 type ApartmentParams = {
   spawn: PlayerSpawn;
@@ -152,23 +151,20 @@ const apartment = async ({
 
   context.onSceneLeave(() => ui.destroy());
 
-  // player.state.isInDialog = true;
-
-  if (!getFromStorage(StorageKeys.Introduction)) {
-    putToStorage(StorageKeys.Introduction, "true");
-
+  if (!StateService.get().introduced) {
     player.state.isInDialog = true;
+    StateService.set({ introduced: true });
 
-    context.wait(0.5, () => {
-      createDialogBox(
-        CharacterType.Shahid,
-        dialog[Interaction.Introduction],
-        () => {
-          player.state.isInDialog = false;
-        },
-        { player }
-      );
-    });
+    // context.wait(0.5, () => {
+    createDialogBox(
+      CharacterType.Shahid,
+      dialog[Interaction.Introduction],
+      () => {
+        player.state.isInDialog = false;
+      },
+      { player }
+    );
+    // });
   }
 };
 
