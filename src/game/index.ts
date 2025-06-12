@@ -17,7 +17,7 @@ import balcony from "./scenes/balcony";
 import { NPCAnimationMap } from "./constants";
 import SoundService from "./sound";
 
-const initGame = () => {
+const init = () => {
   context.loadSprite("apartment", "./backgrounds/apartment.png");
   context.loadSprite("balcony-bg", "./backgrounds/balcony-bg.png");
   context.loadSprite("balcony-fg", "./backgrounds/balcony-fg.png");
@@ -189,4 +189,4 @@ const initGame = () => {
   });
 };
 
-export default initGame;
+export default init;
