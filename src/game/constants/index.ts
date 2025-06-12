@@ -9,6 +9,8 @@ import {
   PlayerMove,
   PlayerSpawn,
   Scene,
+  SettingLabels,
+  UIButtonType,
 } from "../enums";
 import { KeyValuePair } from "../types";
 
@@ -21,6 +23,14 @@ export const CHARACTER_WIDTH = PIXELS_PER_TILE;
 
 export const DOOR_HEIGHT = PIXELS_PER_TILE * 2;
 export const DOOR_WIDTH = PIXELS_PER_TILE;
+
+export const DIALOG_BOX_TEXT_COLOR = "#66522f";
+export const DIALOG_BOX_MAX_WIDTH = 1200;
+export const DIALOG_BOX_HEIGHT = PIXELS_PER_TILE * 4;
+export const DIALOG_BOX_TEXT_SPEED = 0.02;
+export const DIALOG_BOX_OPTIONS_HEIGHT = 8;
+export const UI_SCALE = 3;
+export const FONT_SIZE = 9;
 
 export const LayerOrder = {
   [Layer.CharactersForeground]: 4,
@@ -71,4 +81,18 @@ export const VerticalDoors = [Door.BathroomEntrance];
 export const CharactersPortait = {
   [Character.Shahid]: "shahid-portrait",
   [Character.Hafsah]: "hafsah-portrait",
+};
+
+export const SettingsText: KeyValuePair<string> = {
+  [SettingLabels.Music]: "settings.music",
+  [SettingLabels.SFX]: "settings.sfx",
+  [SettingLabels.Settings]: "settings.settings",
+  [SettingLabels.Locales]: "settings.changeLanguage",
+};
+
+export const UIButtonTileMap = {
+  [UIButtonType.Home]: 0,
+  [UIButtonType.Question]: 1,
+  [UIButtonType.Information]: 2,
+  [UIButtonType.Settings]: 3,
 };

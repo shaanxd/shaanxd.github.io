@@ -15,6 +15,7 @@ import apartment from "./scenes/apartment";
 import { getSpriteParamsWithOffset, getSpritesheetParams } from "./utils/tiles";
 import balcony from "./scenes/balcony";
 import { NPCAnimationMap } from "./constants";
+import SoundService from "./sound";
 
 const initGame = () => {
   context.loadSprite("apartment", "./backgrounds/apartment.png");
@@ -138,6 +139,19 @@ const initGame = () => {
     sliceX: 3,
     sliceY: 1,
   });
+  context.loadSprite("settings-box", "./ui/settings-box.png", {
+    sliceX: 1,
+    sliceY: 1,
+  });
+  context.loadSprite("flags", "./ui/flags.png", {
+    sliceX: 5,
+    sliceY: 1,
+  });
+  context.loadSprite("toggles", "./ui/toggles.png", {
+    sliceX: 1,
+    sliceY: 2,
+  });
+
   context.loadSprite("icons", "./ui/icons.png", {
     sliceX: 4,
     sliceY: 1,
@@ -150,14 +164,25 @@ const initGame = () => {
     sliceX: 1,
     sliceY: 1,
   });
+  context.loadSprite("buttons", "./ui/buttons.png", {
+    sliceX: 4,
+    sliceY: 1,
+  });
 
   context.setBackground(context.Color.fromHex("#311047"));
+
   context.loadFont("medodica", "fonts/medodica.otf");
+
+  context.loadSound("bgm", "./sounds/bgm.wav");
 
   context.scene(Scene.Apartment, apartment);
   context.scene(Scene.Balcony, balcony);
 
   context.go(Scene.Apartment);
+
+  document.getElementById("root")?.click();
+
+  SoundService.init();
 
   window.addEventListener("resize", () => {
     location.reload();

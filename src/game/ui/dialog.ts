@@ -1,18 +1,22 @@
 import { GameObj, TimerController } from "kaplay";
-import { CharactersPortait, PIXELS_PER_TILE } from "../constants";
+import {
+  CharactersPortait,
+  DIALOG_BOX_HEIGHT,
+  DIALOG_BOX_MAX_WIDTH,
+  DIALOG_BOX_OPTIONS_HEIGHT,
+  DIALOG_BOX_TEXT_COLOR,
+  DIALOG_BOX_TEXT_SPEED,
+  FONT_SIZE,
+  PIXELS_PER_TILE,
+  UI_SCALE,
+} from "../constants";
 import context from "../context";
 import { Character, PortraitAnimation } from "../enums";
 import { toTitleCase } from "../utils/text";
 import { isMobile } from "../utils/screen";
 import { Dialog, DialogParams } from "../types";
-
-export const DIALOG_BOX_TEXT_COLOR = "#66522f";
-export const DIALOG_BOX_MAX_WIDTH = 1200;
-export const DIALOG_BOX_HEIGHT = PIXELS_PER_TILE * 4;
-export const DIALOG_BOX_TEXT_SPEED = 0.02;
-export const DIALOG_BOX_OPTIONS_HEIGHT = 8;
-export const UI_SCALE = 3;
-export const FONT_SIZE = 3;
+import LocaleService from "../locales";
+import cursor from "../controls/cursor";
 
 const render = (container: GameObj, line: string) => {
   return line.split("").map((letter, idx) =>
@@ -91,7 +95,7 @@ export const createDialogBox = (
     dialogWidth = dialogWidth - nameContainer.width + PIXELS_PER_TILE;
 
     const name = nameContainer.add([
-      context.text("", { font: "medodica", size: FONT_SIZE * UI_SCALE }),
+      context.text("", { font: "medodica", size: FONT_SIZE }),
       context.color(context.Color.fromHex(DIALOG_BOX_TEXT_COLOR)),
       context.anchor("center"),
     ]);
@@ -116,7 +120,7 @@ export const createDialogBox = (
   const dialogText = dialogContainer.add([
     context.text("", {
       font: "medodica",
-      size: FONT_SIZE * UI_SCALE,
+      size: FONT_SIZE,
       width: dialogContainer.width,
     }),
     context.color(context.Color.fromHex(DIALOG_BOX_TEXT_COLOR)),
@@ -162,7 +166,7 @@ export const createDialogBox = (
       }
       dialogText.text = "";
       options?.destroy();
-      timers = render(dialogText, current.line);
+      timers = render(dialogText, LocaleService.getText(current.line));
       if (current.options) {
         options = container.add([
           context.rect(
@@ -194,14 +198,15 @@ export const createDialogBox = (
           ]);
 
           const label = option.add([
-            context.text(value.type, {
+            context.text(LocaleService.getText(value.type), {
               font: "medodica",
-              size: FONT_SIZE * UI_SCALE,
+              size: FONT_SIZE,
               width: dialogContainer.width,
             }),
             context.area(),
             context.color(context.Color.fromHex(DIALOG_BOX_TEXT_COLOR)),
             context.pos(0, 0),
+            cursor(),
           ]);
 
           option.onHover(() => {
@@ -211,16 +216,8 @@ export const createDialogBox = (
             label.moveTo(context.vec2(0, 0));
           });
 
-          option.onHoverUpdate(() => {
-            context.setCursor("pointer");
-          });
-
-          context.onUpdate(() => {
-            context.setCursor("default");
-          });
-
           option.onClick(() => {
-            if (value.type === "Yes") {
+            if (value.type === "prompt.yes") {
               value.onClick?.(params);
             } else {
               container.destroy();
@@ -245,6 +242,6 @@ export const createDialogBox = (
 
   /** Callback onDestroy */
   container.onDestroy(() => {
-    onClose();
+    context.wait(0.5, onClose);
   });
 };

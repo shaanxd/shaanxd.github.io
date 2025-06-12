@@ -14,16 +14,17 @@ import {
   PlayerSpawn,
   StorageKeys,
 } from "../enums";
-import locales from "../locales";
+import dialog from "../dialog";
 import Animal from "../objects/animal";
 import Boundary from "../objects/boundary";
 import Character from "../objects/character";
 import Door from "../objects/door";
 import Player from "../objects/player";
+import UI from "../objects/ui";
 import { Point } from "../types";
 import { createDialogBox } from "../ui/dialog";
 import { getSpriteScale } from "../utils/sprite";
-import { getFromLocalStorage, putToLocalStorage } from "../utils/storage";
+import { getFromStorage, putToStorage } from "../utils/storage";
 
 type ApartmentParams = {
   spawn: PlayerSpawn;
@@ -36,7 +37,7 @@ const DEFAULT_APARTMENT_PARAMS: ApartmentParams = {
 const apartment = async ({
   spawn,
 }: ApartmentParams = DEFAULT_APARTMENT_PARAMS) => {
-  const scale = (await getSpriteScale("apartment")) * 1.5;
+  const scale = (await getSpriteScale("apartment")) * 1.25;
 
   const data = await (await fetch("./maps/apartment.json")).json();
 
@@ -49,6 +50,10 @@ const apartment = async ({
 
   const player = new Player(scale);
   map.add(player.character);
+
+  const ui = new UI((isUiToggled: boolean) => {
+    player.state.isInDialog = isUiToggled;
+  });
 
   for (const layer of data.layers) {
     switch (layer.name) {
@@ -72,23 +77,23 @@ const apartment = async ({
             });
           }
 
-          const dialog = locales[point.name];
+          const interactableDialog = dialog[point.name];
 
-          if (dialog) {
-            interactable.sprite.onCollide("player", () => {
-              player.state.isInDialog = true;
-              createDialogBox(
-                CharacterType.Shahid,
-                dialog,
-                () => {
-                  player.state.isInDialog = false;
-                },
-                {
-                  player,
-                }
-              );
-            });
+          if (!interactableDialog) {
+            continue;
           }
+
+          interactable.sprite.onCollide("player", () => {
+            player.state.isInDialog = true;
+            createDialogBox(
+              CharacterType.Shahid,
+              interactableDialog,
+              () => {
+                player.state.isInDialog = false;
+              },
+              { player }
+            );
+          });
         }
         break;
       }
@@ -145,15 +150,19 @@ const apartment = async ({
     context.camPos(context.vec2(x, y));
   });
 
-  if (!getFromLocalStorage(StorageKeys.Introduction)) {
-    putToLocalStorage(StorageKeys.Introduction, "true");
+  context.onSceneLeave(() => ui.destroy());
+
+  // player.state.isInDialog = true;
+
+  if (!getFromStorage(StorageKeys.Introduction)) {
+    putToStorage(StorageKeys.Introduction, "true");
 
     player.state.isInDialog = true;
 
     context.wait(0.5, () => {
       createDialogBox(
         CharacterType.Shahid,
-        locales[Interaction.Introduction],
+        dialog[Interaction.Introduction],
         () => {
           player.state.isInDialog = false;
         },

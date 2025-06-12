@@ -5,7 +5,7 @@ export default kaplay({
   height: window.innerHeight,
   global: false,
   debug: true,
-  debugKey: "=",
+  debugKey: "`",
   canvas: document.getElementById("canvas") as HTMLCanvasElement,
   pixelDensity: devicePixelRatio,
 });

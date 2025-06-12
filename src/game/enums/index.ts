@@ -101,4 +101,34 @@ export enum PortraitAnimation {
 
 export enum StorageKeys {
   Introduction = "INTRODUCTION",
+  Locale = "LOCALE",
+  SfxEnabled = "SFX_ENABLED",
+  MusicEnabled = "MUSIC_ENABLED",
+}
+
+export enum Locales {
+  En = "En",
+  De = "De",
+  Fr = "Fr",
+  Nl = "Nl",
+  Es = "Es",
+}
+
+export enum SettingLabels {
+  SFX = "sfx-text",
+  Music = "music-text",
+  Settings = "settings-title",
+  Locales = "locales-title",
+}
+
+export enum SettingPlacements {
+  Flags = "flags",
+  Buttons = "buttons",
+}
+
+export enum UIButtonType {
+  Home = "Home",
+  Question = "Question",
+  Information = "Information",
+  Settings = "Settings",
 }

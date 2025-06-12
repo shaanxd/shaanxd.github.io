@@ -1,17 +1,17 @@
-import { GameObj } from "kaplay";
+import { GameObj, KEventController } from "kaplay";
 import { LayerOrder } from "../constants";
 import { Layer } from "../enums";
 
 function layering(collider: GameObj) {
   let obj: GameObj;
+  let evt: KEventController;
 
   return {
     id: "layering",
 
     add() {
       obj = this as unknown as GameObj;
-
-      obj.onUpdate(() => {
+      evt = obj.onUpdate(() => {
         const colliderYPos = collider.pos.y;
         const objYPos = obj.pos.y;
 
@@ -25,6 +25,10 @@ function layering(collider: GameObj) {
 
         obj.z = layering;
       });
+    },
+
+    destroy() {
+      evt?.cancel();
     },
   };
 }
