@@ -254,6 +254,7 @@ class Player {
   }
 
   bore() {
+    this.idleTimer?.cancel?.();
     this.idleTimer = context.wait(10, () => {
       const animation = IdleAnimations[context.randi(IdleAnimations.length)];
       this.character.play(animation);

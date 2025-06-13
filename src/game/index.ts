@@ -139,7 +139,11 @@ const init = () => {
     sliceX: 3,
     sliceY: 1,
   });
-  context.loadSprite("settings-box", "./ui/settings-box.png", {
+  context.loadSprite("settings", "./ui/settings.png", {
+    sliceX: 1,
+    sliceY: 1,
+  });
+  context.loadSprite("info", "./ui/info.png", {
     sliceX: 1,
     sliceY: 1,
   });
@@ -165,6 +169,11 @@ const init = () => {
     sliceY: 1,
   });
   context.loadSprite("buttons", "./ui/buttons.png", {
+    sliceX: 4,
+    sliceY: 1,
+  });
+
+  context.loadSprite("socials", "./ui/socials.png", {
     sliceX: 4,
     sliceY: 1,
   });

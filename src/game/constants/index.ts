@@ -9,8 +9,9 @@ import {
   PlayerMove,
   PlayerSpawn,
   Scene,
-  SettingLabels,
+  UILabels,
   UIButtonType,
+  Socials,
 } from "../enums";
 import { KeyValuePair } from "../types";
 
@@ -83,11 +84,15 @@ export const CharactersPortait = {
   [Character.Hafsah]: "hafsah-portrait",
 };
 
-export const SettingsText: KeyValuePair<string> = {
-  [SettingLabels.Music]: "settings.music",
-  [SettingLabels.SFX]: "settings.sfx",
-  [SettingLabels.Settings]: "settings.settings",
-  [SettingLabels.Locales]: "settings.changeLanguage",
+export const UIText: KeyValuePair<string> = {
+  [UILabels.Music]: "settings.music",
+  [UILabels.SFX]: "settings.sfx",
+  [UILabels.Settings]: "settings.settings",
+  [UILabels.Locales]: "settings.changeLanguage",
+  [UILabels.Credits]: "info.credits",
+  [UILabels.ExternalLinks]: "info.externalLinks",
+  [UILabels.PersonalInfo]: "info.personalInfo",
+  [UILabels.Info]: "info.info",
 };
 
 export const UIButtonTileMap = {
@@ -95,4 +100,18 @@ export const UIButtonTileMap = {
   [UIButtonType.Question]: 1,
   [UIButtonType.Information]: 2,
   [UIButtonType.Settings]: 3,
+};
+
+export const SocialButtonTileMap = {
+  [Socials.Email]: 0,
+  [Socials.GitHub]: 1,
+  [Socials.Instagram]: 2,
+  [Socials.LinkedIn]: 3,
+};
+
+export const SocialLinkMap = {
+  [Socials.Email]: "mailto:shaahid.xd@gmail.com",
+  [Socials.GitHub]: "http://www.github.com/shaanxd",
+  [Socials.Instagram]: "http://www.instagram.com/jhnxed.xd",
+  [Socials.LinkedIn]: "http://www.linkedin.com/in/shahid-xd",
 };

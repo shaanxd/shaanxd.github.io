@@ -5,11 +5,21 @@ import {
   DIALOG_BOX_TEXT_COLOR,
   FONT_SIZE,
   PIXELS_PER_TILE,
-  SettingsText,
+  UIText,
   UI_SCALE,
   UIButtonTileMap,
+  CharactersPortait,
+  SocialButtonTileMap,
+  SocialLinkMap,
 } from "../constants";
-import { Locales, SettingLabels, UIButtonType } from "../enums";
+import {
+  Locales,
+  UILabels,
+  UIButtonType,
+  Character,
+  PortraitAnimation,
+  Socials,
+} from "../enums";
 import { getSpriteMetadata } from "../utils/sprite";
 import { Point, TileMapJsonData } from "../types";
 import Toggle from "./toggle";
@@ -24,13 +34,17 @@ export const FLAG_PADDING = 3.5;
 export const BUTTON_PADDING = 4;
 
 class UI {
-  spriteData!: SpriteData;
-  jsonData!: TileMapJsonData;
-
-  settings: GameObj | undefined;
   ui: GameObj | undefined;
 
+  settings: GameObj | undefined;
   isSettingsVisible: boolean = false;
+  settingsSpriteData!: SpriteData;
+  settingsJsonData!: TileMapJsonData;
+
+  info: GameObj | undefined;
+  isInfoVisible: boolean = false;
+  infoSpriteData!: SpriteData;
+  infoJsonData!: TileMapJsonData;
 
   onUiToggle: (_: boolean) => void;
 
@@ -40,8 +54,11 @@ class UI {
   }
 
   async load() {
-    this.spriteData = await getSpriteMetadata("settings-box");
-    this.jsonData = await (await fetch("./ui/settings-box.json")).json();
+    this.settingsSpriteData = await getSpriteMetadata("settings");
+    this.settingsJsonData = await (await fetch("./ui/settings.json")).json();
+
+    this.infoSpriteData = await getSpriteMetadata("info");
+    this.infoJsonData = await (await fetch("./ui/info.json")).json();
 
     this.createUi();
   }
@@ -55,7 +72,7 @@ class UI {
     ];
 
     const buttonWidth = options.length * PIXELS_PER_TILE;
-    const paddingWidth = (options.length + 1) * PIXELS_PER_TILE;
+    const paddingWidth = (options.length + 1) * BUTTON_PADDING;
 
     const uiWidth = buttonWidth + paddingWidth;
     const uiHeight = PIXELS_PER_TILE + BUTTON_PADDING * 2;
@@ -96,20 +113,28 @@ class UI {
     this.onUiToggle(this.isSettingsVisible);
   }
 
-  toggleInfo() {}
+  toggleInfo() {
+    if (this.isInfoVisible) {
+      this.info?.destroy();
+    } else {
+      this.createInfo();
+    }
+    this.isInfoVisible = !this.isInfoVisible;
+    this.onUiToggle(this.isInfoVisible);
+  }
 
   createSettings() {
     this.settings?.destroy?.();
 
-    if (!this.spriteData || !this.jsonData) {
+    if (!this.settingsSpriteData || !this.settingsJsonData) {
       return;
     }
 
-    const { width, height } = this.spriteData;
-    const { layers } = this.jsonData;
+    const { width, height } = this.settingsSpriteData;
+    const { layers } = this.settingsJsonData;
 
     this.settings = context.add([
-      context.sprite("settings-box"),
+      context.sprite("settings"),
       context.pos(
         window.innerWidth / 2 - (width * UI_SCALE) / 2,
         window.innerHeight / 2 - (height * UI_SCALE) / 2
@@ -146,7 +171,7 @@ class UI {
             }
             break;
           case "texts": {
-            this.createTexts(point);
+            this.createTexts(this.settings, point);
             break;
           }
         }
@@ -154,20 +179,138 @@ class UI {
     }
   }
 
-  createTexts({ x, y, name }: Point) {
-    if (!this.settings) {
+  createInfo() {
+    this.info?.destroy?.();
+
+    if (!this.infoSpriteData || !this.infoJsonData) {
       return;
     }
-    this.settings.add([
-      context.text(LocaleService.getText(SettingsText[name!]), {
+
+    const { width, height } = this.infoSpriteData;
+    const { layers } = this.infoJsonData;
+
+    this.info = context.add([
+      context.sprite("info"),
+      context.pos(
+        window.innerWidth / 2 - (width * UI_SCALE) / 2,
+        window.innerHeight / 2 - (height * UI_SCALE) / 2
+      ),
+      context.scale(context.vec2(UI_SCALE)),
+      context.fixed(),
+      context.z(100),
+      context.area(),
+    ]);
+
+    this.info.onKeyDown("escape", () => this.toggleSettings());
+
+    for (const layer of layers) {
+      if (!layer.objects) {
+        continue;
+      }
+      for (const point of layer.objects) {
+        switch (layer.name) {
+          case "placements":
+            switch (point.name) {
+              case "external-links": {
+                this.createExternalLinks(point);
+                break;
+              }
+              case "portrait": {
+                this.createPortrait(point);
+                break;
+              }
+              default:
+            }
+            break;
+          case "texts": {
+            if (point.name === UILabels.PersonalInfo) {
+              this.info.add([
+                context.text(
+                  LocaleService.getText(UIText[UILabels.PersonalInfo]),
+                  {
+                    width: PIXELS_PER_TILE * 5.5,
+                    font: "medodica",
+                    size: FONT_SIZE - 1,
+                    align: "center",
+                  }
+                ),
+                context.color(context.Color.fromHex(DIALOG_BOX_TEXT_COLOR)),
+                context.pos(point.x, point.y),
+                context.anchor("top"),
+              ]);
+              continue;
+            }
+            this.createTexts(this.info, point);
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  createTexts(container: GameObj, { x, y, name }: Point) {
+    container.add([
+      context.text(LocaleService.getText(UIText[name!]), {
         font: "medodica",
         size: FONT_SIZE,
+        styles: {},
       }),
       context.area(),
       context.pos(context.vec2(x, y)),
       context.anchor("center"),
       context.color(context.Color.fromHex(DIALOG_BOX_TEXT_COLOR)),
     ]);
+  }
+
+  createPortrait({ x, y }: Point) {
+    if (!this.info) {
+      return;
+    }
+    this.info.add([
+      context.sprite(CharactersPortait[Character.Shahid], {
+        anim: PortraitAnimation.Idle,
+      }),
+      /** Place it at the center of Portrait Container */
+      context.pos(x, y),
+      context.anchor("center"),
+    ]);
+  }
+
+  createExternalLinks({ x, y }: Point) {
+    if (!this.info) {
+      return;
+    }
+    const options = Object.values(Socials);
+
+    const buttonWidth = options.length * PIXELS_PER_TILE;
+    const paddingWidth = (options.length + 1) * BUTTON_PADDING;
+
+    const uiWidth = buttonWidth + paddingWidth;
+
+    const parent = this.info.add([
+      context.rect(uiWidth, PIXELS_PER_TILE, {
+        fill: false,
+      }),
+      context.scale(0.5),
+      /** Place it at the center of Portrait Container */
+      context.pos(x + uiWidth / 4, y),
+    ]);
+
+    options.forEach((social, idx) => {
+      const xPosition =
+        idx * PIXELS_PER_TILE + BUTTON_PADDING + BUTTON_PADDING * idx;
+
+      const button = parent.add([
+        context.sprite("socials", { frame: SocialButtonTileMap[social] }),
+        context.pos(xPosition, 0),
+        context.area(),
+        cursor(),
+      ]);
+
+      button.onClick(() => {
+        window.open(SocialLinkMap[social], "_blank");
+      });
+    });
   }
 
   createOptions({ x, y, height, width }: Point) {
@@ -182,7 +325,7 @@ class UI {
 
     const uiToggleOptions = [
       {
-        label: LocaleService.getText(SettingsText[SettingLabels.Music]),
+        label: LocaleService.getText(UIText[UILabels.Music]),
         value: StateService.get().musicEnabled,
         onClick: (value: boolean) => {
           StateService.set({ musicEnabled: value });
@@ -190,7 +333,7 @@ class UI {
         },
       },
       {
-        label: LocaleService.getText(SettingsText[SettingLabels.SFX]),
+        label: LocaleService.getText(UIText[UILabels.SFX]),
         value: StateService.get().sfxEnabled,
         onClick: (value: boolean) => {
           StateService.set({ sfxEnabled: value });

@@ -107,14 +107,18 @@ export enum Locales {
   Es = "Es",
 }
 
-export enum SettingLabels {
+export enum UILabels {
   SFX = "sfx-text",
   Music = "music-text",
   Settings = "settings-title",
   Locales = "locales-title",
+  Credits = "credits-title",
+  ExternalLinks = "external-links-title",
+  PersonalInfo = "personal-info-text",
+  Info = "info-title",
 }
 
-export enum SettingPlacements {
+export enum UIPlacements {
   Flags = "flags",
   Buttons = "buttons",
 }
@@ -124,4 +128,11 @@ export enum UIButtonType {
   Question = "Question",
   Information = "Information",
   Settings = "Settings",
+}
+
+export enum Socials {
+  Email = "email",
+  GitHub = "github",
+  Instagram = "instagram",
+  LinkedIn = "linkedin",
 }

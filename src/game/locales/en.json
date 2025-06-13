@@ -19,5 +19,9 @@
   "settings.sfx": "SFX",
   "settings.settings": "Settings",
   "settings.changeLanguage": "Change Language",
-  "settings.close": "Close"
+  "settings.close": "Close",
+  "info.credits": "Special thanks to ❤",
+  "info.externalLinks": "Let's have a chat!",
+  "info.info": "Hey there!",
+  "info.personalInfo": "I'm Shahid, a Developer based on Berlin, who is super passionate about creating fun web experiences!\nWelcome to my portfolio!\n\nFeel free to connect using the links below!"
 }
