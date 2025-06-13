@@ -104,6 +104,9 @@ class UI {
   }
 
   toggleSettings() {
+    if (this.isInfoVisible) {
+      this.toggleInfo();
+    }
     if (this.isSettingsVisible) {
       this.settings?.destroy();
     } else {
@@ -114,6 +117,9 @@ class UI {
   }
 
   toggleInfo() {
+    if (this.isSettingsVisible) {
+      this.toggleSettings();
+    }
     if (this.isInfoVisible) {
       this.info?.destroy();
     } else {
