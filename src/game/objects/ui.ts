@@ -240,7 +240,7 @@ class UI {
                 context.text(
                   LocaleService.getText(UIText[UILabels.PersonalInfo]),
                   {
-                    width: PIXELS_PER_TILE * 5.5,
+                    width: PIXELS_PER_TILE * 6,
                     font: "medodica",
                     size: FONT_SIZE - 2,
                     align: "center",
@@ -306,7 +306,7 @@ class UI {
 
     credits.forEach((credit, idx) => {
       const root = parent.add([
-        context.rect(width, PIXELS_PER_TILE, {
+        context.rect(width, PIXELS_PER_TILE / 2, {
           fill: false,
         }),
         context.pos(0, (idx * PIXELS_PER_TILE) / 2),
