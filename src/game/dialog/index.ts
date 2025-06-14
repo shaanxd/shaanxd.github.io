@@ -21,7 +21,7 @@ const dialog: KeyValuePair<Dialog[]> = {
       ],
     },
   ],
-  [Interactable.KitchenCounter]: [],
+  // [Interactable.KitchenCounter]: [],
   [Interactable.Luggage]: [{ line: "luggage.1" }],
   [Interactable.TVTable]: [{ line: "tvTable.1" }],
   [Interactable.Bed]: [{ line: "bed.1" }, { line: "bed.2" }],
