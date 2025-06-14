@@ -7,21 +7,25 @@ const SoundService = (function () {
 
   return {
     init() {
-      const isMusicEnabled = StateService.get().musicEnabled;
-
       music = context.play("bgm", {
-        volume: 0.005,
+        volume: 0.1,
         loop: true,
-        paused: !isMusicEnabled,
       });
     },
-    toggleMusic() {
-      const isMusicEnabled = StateService.get().musicEnabled;
+    onMusicToggle() {
+      const musicEnabled = !StateService.get().musicEnabled;
 
-      if (isMusicEnabled) {
-        return music?.play();
+      StateService.set({ musicEnabled });
+
+      if (musicEnabled) {
+        if (music) {
+          return music.play();
+        }
+        return this.init();
       }
-      music.paused = true;
+      if (music) {
+        music.paused = true;
+      }
     },
   };
 })();

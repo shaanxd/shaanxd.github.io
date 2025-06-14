@@ -26,6 +26,8 @@ const StateService = (function () {
         };
         putToStorage("METADATA", JSON.stringify(state));
       }
+      /** Kinda disable music always to not be loud. */
+      state.musicEnabled = false;
     },
     set(updatedState: Partial<State>) {
       state = {

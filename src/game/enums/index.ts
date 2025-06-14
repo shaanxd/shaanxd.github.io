@@ -136,3 +136,10 @@ export enum Socials {
   Instagram = "instagram",
   LinkedIn = "linkedin",
 }
+
+export enum Credits {
+  Tileset = "tileset",
+  Music = "music",
+  Flags = "flags",
+  Library = "library",
+}

@@ -8,6 +8,7 @@ import Player from "../objects/player";
 import { Point } from "../types";
 import { getSpriteScale } from "../utils/sprite";
 import Vehicle from "../objects/vehicle";
+import UI from "../objects/ui";
 
 const spawn = (point: Point, map: GameObj) => {
   const isHeadingRight = point.name === "vehicle-spawn-left";
@@ -51,6 +52,10 @@ const balcony = async () => {
   const player = new Player(scale);
 
   balcony.add(player.character);
+
+  const ui = new UI((isUiToggled: boolean) => {
+    player.state.isInDialog = isUiToggled;
+  });
 
   for (const layer of data.layers) {
     switch (layer.name) {
@@ -129,6 +134,8 @@ const balcony = async () => {
 
     context.camPos(context.vec2(x, y));
   });
+
+  context.onSceneLeave(() => ui.destroy());
 };
 
 export default balcony;

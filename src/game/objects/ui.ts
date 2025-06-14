@@ -11,6 +11,7 @@ import {
   CharactersPortait,
   SocialButtonTileMap,
   SocialLinkMap,
+  CreditLinkMap,
 } from "../constants";
 import {
   Locales,
@@ -19,6 +20,7 @@ import {
   Character,
   PortraitAnimation,
   Socials,
+  Credits,
 } from "../enums";
 import { getSpriteMetadata } from "../utils/sprite";
 import { Point, TileMapJsonData } from "../types";
@@ -225,6 +227,10 @@ class UI {
                 this.createPortrait(point);
                 break;
               }
+              case "credits": {
+                this.createCredits(point);
+                break;
+              }
               default:
             }
             break;
@@ -236,7 +242,7 @@ class UI {
                   {
                     width: PIXELS_PER_TILE * 5.5,
                     font: "medodica",
-                    size: FONT_SIZE - 1,
+                    size: FONT_SIZE - 2,
                     align: "center",
                   }
                 ),
@@ -272,14 +278,56 @@ class UI {
     if (!this.info) {
       return;
     }
-    this.info.add([
+    const portrait = this.info.add([
       context.sprite(CharactersPortait[Character.Shahid], {
-        anim: PortraitAnimation.Idle,
+        frame: 0,
       }),
       /** Place it at the center of Portrait Container */
       context.pos(x, y),
       context.anchor("center"),
     ]);
+
+    portrait.play(PortraitAnimation.Idle, { loop: true, speed: 5 });
+  }
+
+  createCredits({ x, y, width }: Point) {
+    if (!this.info) {
+      return;
+    }
+    const credits = Object.values(Credits);
+
+    const parent = this.info.add([
+      context.rect(width, PIXELS_PER_TILE, {
+        fill: false,
+      }),
+      /** Place it at the center of Portrait Container */
+      context.pos(x, y),
+    ]);
+
+    credits.forEach((credit, idx) => {
+      const root = parent.add([
+        context.rect(width, PIXELS_PER_TILE, {
+          fill: false,
+        }),
+        context.pos(0, (idx * PIXELS_PER_TILE) / 2),
+      ]);
+
+      const button = root.add([
+        context.text(LocaleService.getText(UIText[credit]), {
+          font: "medodica",
+          size: FONT_SIZE - 2,
+          align: "center",
+          width: root.width,
+        }),
+        context.color(context.Color.fromHex(DIALOG_BOX_TEXT_COLOR)),
+        context.area(),
+        cursor(),
+      ]);
+
+      button.onClick(() => {
+        window.open(CreditLinkMap[credit], "_blank");
+      });
+    });
   }
 
   createExternalLinks({ x, y }: Point) {
@@ -333,17 +381,14 @@ class UI {
       {
         label: LocaleService.getText(UIText[UILabels.Music]),
         value: StateService.get().musicEnabled,
-        onClick: (value: boolean) => {
-          StateService.set({ musicEnabled: value });
-          SoundService.toggleMusic();
+        onClick: () => {
+          SoundService.onMusicToggle();
         },
       },
       {
         label: LocaleService.getText(UIText[UILabels.SFX]),
         value: StateService.get().sfxEnabled,
-        onClick: (value: boolean) => {
-          StateService.set({ sfxEnabled: value });
-        },
+        onClick: () => {},
       },
     ];
 

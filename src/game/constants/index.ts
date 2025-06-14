@@ -12,6 +12,7 @@ import {
   UILabels,
   UIButtonType,
   Socials,
+  Credits,
 } from "../enums";
 import { KeyValuePair } from "../types";
 
@@ -93,6 +94,10 @@ export const UIText: KeyValuePair<string> = {
   [UILabels.ExternalLinks]: "info.externalLinks",
   [UILabels.PersonalInfo]: "info.personalInfo",
   [UILabels.Info]: "info.info",
+  [Credits.Flags]: "info.flags",
+  [Credits.Library]: "info.library",
+  [Credits.Music]: "info.music",
+  [Credits.Tileset]: "info.tileset",
 };
 
 export const UIButtonTileMap = {
@@ -112,6 +117,13 @@ export const SocialButtonTileMap = {
 export const SocialLinkMap = {
   [Socials.Email]: "mailto:shaahid.xd@gmail.com",
   [Socials.GitHub]: "http://www.github.com/shaanxd",
-  [Socials.Instagram]: "http://www.instagram.com/jhnxed.xd",
+  [Socials.Instagram]: "http://www.instagram.com/jhnx.xd",
   [Socials.LinkedIn]: "http://www.linkedin.com/in/shahid-xd",
+};
+
+export const CreditLinkMap = {
+  [Credits.Flags]: "https://dafluffypotato.itch.io/",
+  [Credits.Library]: "https://kaplayjs.com/",
+  [Credits.Music]: "https://pixabay.com/users/grand_project-19033897/",
+  [Credits.Tileset]: "https://limezu.itch.io/",
 };
