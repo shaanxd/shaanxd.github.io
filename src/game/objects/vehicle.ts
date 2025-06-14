@@ -18,6 +18,7 @@ class Vehicle {
       context.move(dir, 100),
       context.z(1),
       "vehicle",
+      context.offscreen({ destroy: true }),
     ]);
   }
 }
