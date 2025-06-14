@@ -1,14 +1,12 @@
-import { GameObj, Vec2 } from "kaplay";
+import { Vec2 } from "kaplay";
 import context from "../context";
 import { VehicleAnimation } from "../enums";
 
 class Vehicle {
-  sprite: GameObj;
-
-  constructor(pos: Vec2, dir: Vec2) {
+  static create(pos: Vec2, dir: Vec2) {
     const rand = context.randi(1, 5);
 
-    this.sprite = context.make([
+    return context.make([
       context.sprite(`vehicle_${rand}`, { anim: VehicleAnimation.IdleSide }),
       context.area({
         shape: new context.Rect(context.vec2(0, -2.5), 5, 5),

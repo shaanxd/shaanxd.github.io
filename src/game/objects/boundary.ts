@@ -1,12 +1,9 @@
-import { GameObj } from "kaplay";
 import { Point } from "../types";
 import context from "../context";
 
 class Boundary {
-  sprite: GameObj;
-
-  constructor(point: Point) {
-    this.sprite = context.make([
+  static create(point: Point) {
+    return context.make([
       context.area({
         shape: new context.Rect(context.vec2(0), point.width, point.height),
       }),

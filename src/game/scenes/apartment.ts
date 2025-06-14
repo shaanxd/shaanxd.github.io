@@ -15,8 +15,6 @@ import {
 } from "../enums";
 import dialog from "../dialog";
 import Animal from "../objects/animal";
-import Boundary from "../objects/boundary";
-import Character from "../objects/character";
 import Door from "../objects/door";
 import Player from "../objects/player";
 import UI from "../objects/ui";
@@ -24,6 +22,8 @@ import { Point } from "../types";
 import { createDialogBox } from "../ui/dialog";
 import { getSpriteScale } from "../utils/sprite";
 import StateService from "../state";
+import Character from "../objects/character";
+import Boundary from "../objects/boundary";
 
 type ApartmentParams = {
   spawn: PlayerSpawn;
@@ -58,20 +58,20 @@ const apartment = async ({
     switch (layer.name) {
       case "boundaries": {
         for (const point of layer.objects) {
-          map.add(new Boundary(point).sprite);
+          map.add(Boundary.create(point));
         }
         break;
       }
       case "interactables": {
         for (const point of layer.objects) {
-          const interactable = new Boundary(point);
-          map.add(interactable.sprite);
+          const interactable = Boundary.create(point);
+          map.add(interactable);
 
           if (!point.name) {
             continue;
           }
           if (point.name === Interactable.BalconyEntrance) {
-            interactable.sprite.onCollide("player", () => {
+            interactable.onCollide("player", () => {
               context.go(SceneSpawnMap[point.name]);
             });
           }
@@ -82,7 +82,7 @@ const apartment = async ({
             continue;
           }
 
-          interactable.sprite.onCollide("player", () => {
+          interactable.onCollide("player", () => {
             player.state.isInDialog = true;
             createDialogBox(
               CharacterType.Shahid,
@@ -119,14 +119,14 @@ const apartment = async ({
       case "characters": {
         for (const point of layer.objects) {
           if (point.name === "meow") {
-            const animal = new Animal(AnimalType.Cat, point);
-            map.add(animal.sprite);
+            const animal = Animal.create(AnimalType.Cat, point);
+            map.add(animal);
 
             continue;
           }
-          const character = new Character(point);
-          character.sprite.use(layering(player.character));
-          map.add(character.sprite);
+          const character = Character.create(point);
+          character.use(layering(player.character));
+          map.add(character);
         }
       }
     }

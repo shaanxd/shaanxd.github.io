@@ -2,31 +2,31 @@ import { GameObj } from "kaplay";
 import { SceneSpawnMap } from "../constants";
 import context from "../context";
 import { Interactable, NPCAnimation, PlayerSpawn } from "../enums";
-import Boundary from "../objects/boundary";
-import NPC from "../objects/npc";
 import Player from "../objects/player";
 import { Point } from "../types";
 import { getSpriteScale } from "../utils/sprite";
-import Vehicle from "../objects/vehicle";
 import UI from "../objects/ui";
+import NPC from "../objects/npc";
+import Boundary from "../objects/boundary";
+import Vehicle from "../objects/vehicle";
 
 const spawn = (point: Point, map: GameObj) => {
   const isHeadingRight = point.name === "vehicle-spawn-left";
 
   const pointX = isHeadingRight ? point.x - 50 : point.x + 50;
 
-  const vehicle = new Vehicle(
+  const vehicle = Vehicle.create(
     context.vec2(pointX, point.y),
     isHeadingRight ? context.RIGHT : context.LEFT
   );
 
   if (!isHeadingRight) {
-    vehicle.sprite.flipX = true;
+    vehicle.flipX = true;
   }
 
-  map.add(vehicle.sprite);
+  map.add(vehicle);
 
-  context.wait(context.randi(3, 7), () => {
+  context.wait(context.randi(10, 20), () => {
     spawn(point, map);
   });
 };
@@ -61,7 +61,7 @@ const balcony = async () => {
     switch (layer.name) {
       case "boundaries": {
         for (const point of layer.objects) {
-          map.add(new Boundary(point).sprite);
+          map.add(Boundary.create(point));
         }
         break;
       }
@@ -87,7 +87,7 @@ const balcony = async () => {
                 break;
             }
 
-            map.add(new NPC(count, animation, point).sprite);
+            map.add(NPC.create(count, animation, point));
 
             count++;
 
@@ -103,11 +103,11 @@ const balcony = async () => {
       }
       case "interactables": {
         for (const point of layer.objects) {
-          const interactable = new Boundary(point);
-          map.add(interactable.sprite);
+          const interactable = Boundary.create(point);
+          map.add(interactable);
 
           if (point.name) {
-            interactable.sprite.onCollide("player", () => {
+            interactable.onCollide("player", () => {
               if (point.name === Interactable.ApartmentEntrance) {
                 context.go(SceneSpawnMap[point.name], {
                   spawn: PlayerSpawn.PlayerBalcony,
