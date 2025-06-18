@@ -151,21 +151,21 @@ const apartment = async ({
 
   context.onSceneLeave(() => ui.destroy());
 
-  if (!StateService.get().introduced) {
-    player.state.isInDialog = true;
-    StateService.set({ introduced: true });
+  player.state.isInDialog = true;
 
-    // context.wait(0.5, () => {
-    createDialogBox(
-      CharacterType.Shahid,
-      dialog[Interaction.Introduction],
-      () => {
-        player.state.isInDialog = false;
-      },
-      { player }
-    );
-    // });
-  }
+  const hasIntrod = StateService.get().introduced;
+  const introDialog =
+    dialog[hasIntrod ? Interaction.IntroBrief : Interaction.Intro];
+
+  // context.wait(0.5, () => {
+  createDialogBox(
+    CharacterType.Shahid,
+    introDialog,
+    () => {
+      player.state.isInDialog = false;
+    },
+    { player }
+  );
 };
 
 export default apartment;

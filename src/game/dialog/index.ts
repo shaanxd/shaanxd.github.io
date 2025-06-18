@@ -38,7 +38,7 @@ const dialog: KeyValuePair<Dialog[]> = {
     },
     { line: "wardrobe.1.yes" },
   ],
-  [Interaction.Introduction]: [
+  [Interaction.Intro]: [
     {
       line: "intro.1",
     },
@@ -47,6 +47,11 @@ const dialog: KeyValuePair<Dialog[]> = {
     },
     { line: "intro.3" },
     { line: "intro.4" },
+  ],
+  [Interaction.IntroBrief]: [
+    {
+      line: "intro.1",
+    },
   ],
   [Interaction.ShahidToHafsah]: [],
   [Interaction.HafsahToShahid]: [],

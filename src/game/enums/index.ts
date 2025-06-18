@@ -55,7 +55,8 @@ export enum Interactable {
 }
 
 export enum Interaction {
-  Introduction = "introduction",
+  Intro = "intro",
+  IntroBrief = "intro-brief",
   ShahidToHafsah = "shahid-to-hafsah",
   HafsahToShahid = "hafsah-to-shahid",
 }
