@@ -151,13 +151,16 @@ const apartment = async ({
 
   context.onSceneLeave(() => ui.destroy());
 
+  if (spawn !== PlayerSpawn.PlayerApartment) {
+    return;
+  }
+
   player.state.isInDialog = true;
 
   const hasIntrod = StateService.get().introduced;
   const introDialog =
     dialog[hasIntrod ? Interaction.IntroBrief : Interaction.Intro];
 
-  // context.wait(0.5, () => {
   createDialogBox(
     CharacterType.Shahid,
     introDialog,
