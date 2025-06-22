@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sanitize": "node sanitize-json-files.cjs"
   },
   "dependencies": {
     "kaplay": "^4000.0.0-alpha.4"
