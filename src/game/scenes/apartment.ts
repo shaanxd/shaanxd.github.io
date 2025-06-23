@@ -161,14 +161,16 @@ const apartment = async ({
   const introDialog =
     dialog[hasIntrod ? Interaction.IntroBrief : Interaction.Intro];
 
-  createDialogBox(
-    CharacterType.Shahid,
-    introDialog,
-    () => {
-      player.state.isInDialog = false;
-    },
-    { player }
-  );
+  context.wait(0.5, () => {
+    createDialogBox(
+      CharacterType.Shahid,
+      introDialog,
+      () => {
+        player.state.isInDialog = false;
+      },
+      { player }
+    );
+  });
 };
 
 export default apartment;
