@@ -15,11 +15,13 @@ import apartment from "./scenes/apartment";
 import { getSpriteParamsWithOffset, getSpritesheetParams } from "./utils/tiles";
 import balcony from "./scenes/balcony";
 import { NPCAnimationMap } from "./constants";
+import bayes from "./scenes/bayes";
 
 const init = () => {
   context.loadSprite("apartment", "./backgrounds/apartment.png");
   context.loadSprite("balcony-bg", "./backgrounds/balcony-bg.png");
   context.loadSprite("balcony-fg", "./backgrounds/balcony-fg.png");
+  context.loadSprite("bayes", "./backgrounds/bayes.png");
 
   [
     Character.Shahid,
@@ -78,6 +80,18 @@ const init = () => {
       [
         { name: DoorAnimation.Open, values: [0, 4] },
         { name: DoorAnimation.Closed, values: [4, 0] },
+      ],
+      { speed: 10 }
+    ),
+  });
+
+  context.loadSprite("elevator_doors", "/objects/elevator_door.png", {
+    ...getSpritesheetParams(
+      8,
+      1,
+      [
+        { name: DoorAnimation.Open, values: [0, 7] },
+        { name: DoorAnimation.Closed, values: [7, 0] },
       ],
       { speed: 10 }
     ),
@@ -184,6 +198,7 @@ const init = () => {
 
   context.scene(Scene.Apartment, apartment);
   context.scene(Scene.Balcony, balcony);
+  context.scene(Scene.Bayes, bayes);
 
   context.go(Scene.Apartment);
 

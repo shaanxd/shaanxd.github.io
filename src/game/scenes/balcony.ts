@@ -123,7 +123,7 @@ const balcony = async () => {
     }
   }
 
-  context.onUpdate("player", () => {
+  const camera = context.onUpdate("player", () => {
     const left = window.innerWidth / 2;
     const right = map.width * scale - window.innerWidth / 2;
 
@@ -135,7 +135,10 @@ const balcony = async () => {
     context.camPos(context.vec2(x, y));
   });
 
-  context.onSceneLeave(() => ui.destroy());
+  context.onSceneLeave(() => {
+    ui.destroy();
+    camera.cancel();
+  });
 };
 
 export default balcony;

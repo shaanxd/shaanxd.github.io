@@ -47,6 +47,7 @@ const sanitize = (name) => {
 [
   "maps/apartment.json",
   "maps/balcony.json",
+  "maps/bayes.json",
   "ui/info.json",
   "ui/settings.json",
 ].forEach((file) => {

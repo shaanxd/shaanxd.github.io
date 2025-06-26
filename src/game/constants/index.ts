@@ -26,6 +26,9 @@ export const CHARACTER_WIDTH = PIXELS_PER_TILE;
 export const DOOR_HEIGHT = PIXELS_PER_TILE * 2;
 export const DOOR_WIDTH = PIXELS_PER_TILE;
 
+export const ELEVATOR_DOOR_HEIGHT = PIXELS_PER_TILE * 2;
+export const ELEVATOR_DOOR_WIDTH = PIXELS_PER_TILE * 2;
+
 export const DIALOG_BOX_TEXT_COLOR = "#66522f";
 export const DIALOG_BOX_MAX_WIDTH = 1200;
 export const DIALOG_BOX_HEIGHT = PIXELS_PER_TILE * 4;
@@ -61,6 +64,7 @@ export const DoorSpawnMapping: KeyValuePair = {
 export const SceneSpawnMap: KeyValuePair<Scene> = {
   [Interactable.BalconyEntrance]: Scene.Balcony,
   [Interactable.ApartmentEntrance]: Scene.Apartment,
+  [Interactable.WorldEntrance]: Scene.Bayes,
 };
 
 export const NPCAnimationMap = {
@@ -76,6 +80,7 @@ export const EnabledDoors = [
   Door.BalconyEntrance,
   Door.RoomEntrance,
   Door.BathroomEntrance,
+  Door.WorldEntrance,
 ];
 
 export const VerticalDoors = [Door.BathroomEntrance];

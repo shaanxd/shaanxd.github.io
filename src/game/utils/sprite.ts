@@ -5,7 +5,10 @@ import { getRoundedInt } from "./number";
 export const getSpriteMetadata = (sprite: string) =>
   context.getSprite(sprite) as Asset<SpriteData>;
 
-export const getSpriteScale = async (sprite: string) => {
+export const getSpriteScale = async (
+  sprite: string,
+  only?: "width" | "height"
+) => {
   try {
     const { width, height } = await getSpriteMetadata(sprite);
 
@@ -16,8 +19,9 @@ export const getSpriteScale = async (sprite: string) => {
     let map = width;
 
     if (
-      mapAspectRatio > windowAspectRatio ||
-      window.innerHeight > window.innerWidth
+      only !== "width" &&
+      (mapAspectRatio > windowAspectRatio ||
+        window.innerHeight > window.innerWidth)
     ) {
       screen = window.innerHeight;
       map = height;

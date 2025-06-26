@@ -9,7 +9,6 @@ import layering from "../controls/layering";
 import {
   Animal as AnimalType,
   Character as CharacterType,
-  Interactable,
   Interaction,
   PlayerSpawn,
 } from "../enums";
@@ -70,7 +69,7 @@ const apartment = async ({
           if (!point.name) {
             continue;
           }
-          if (point.name === Interactable.BalconyEntrance) {
+          if (point.name.includes("entrance") && SceneSpawnMap[point.name]) {
             interactable.onCollide("player", () => {
               context.go(SceneSpawnMap[point.name]);
             });
@@ -132,7 +131,7 @@ const apartment = async ({
     }
   }
 
-  context.onUpdate("player", () => {
+  const camera = context.onUpdate("player", () => {
     const left = window.innerWidth / 2;
     const right = map.width * scale - left;
 
@@ -149,7 +148,10 @@ const apartment = async ({
     context.camPos(context.vec2(x, y));
   });
 
-  context.onSceneLeave(() => ui.destroy());
+  context.onSceneLeave(() => {
+    ui.destroy();
+    camera.cancel();
+  });
 
   if (spawn !== PlayerSpawn.PlayerApartment) {
     return;
