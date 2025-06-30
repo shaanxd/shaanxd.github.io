@@ -200,7 +200,7 @@ const init = () => {
   context.scene(Scene.Balcony, balcony);
   context.scene(Scene.Bayes, bayes);
 
-  context.go(Scene.Bayes);
+  context.go(Scene.Apartment);
 
   window.addEventListener("resize", () => {
     location.reload();
