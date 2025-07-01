@@ -91,7 +91,10 @@ class Player {
 
   private area() {
     return context.make([
-      context.rect(CHARACTER_WIDTH, CHARACTER_HEIGHT, { fill: false }),
+      context.rect(CHARACTER_WIDTH * 2, CHARACTER_HEIGHT * 2, {
+        fill: false,
+      }),
+      context.pos(0, CHARACTER_HEIGHT / 2),
       context.area(),
       context.anchor("bot"),
       "player-hit-box",
