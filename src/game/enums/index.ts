@@ -1,7 +1,8 @@
 export enum Scene {
   Apartment = "Apartment",
   Balcony = "Balcony",
-  Bayes = "Bayes",
+  Third = "Third",
+  Fourth = "Fourth",
 }
 
 export enum Character {
@@ -55,6 +56,8 @@ export enum Interactable {
   Bed = "bed",
   Wardrobe = "wardrobe",
   WorldEntrance = "world-entrance",
+  FourthEntrance = "fourth-entrance",
+  ThirdEntrance = "third-entrance",
 }
 
 export enum Interaction {

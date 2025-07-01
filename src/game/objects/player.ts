@@ -47,9 +47,14 @@ class Player {
   idleTimer: TimerController | undefined;
   scale: number;
 
-  constructor(scale: number) {
+  constructor(scale: number, direction?: Vec2) {
     this.scale = scale;
     this.state = PLAYER_DEFAULT_STATE;
+
+    if (direction) {
+      this.state.direction = direction;
+    }
+
     this.character = this.sprite();
     this.hitbox = this.area();
 

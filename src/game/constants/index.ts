@@ -64,7 +64,9 @@ export const DoorSpawnMapping: KeyValuePair = {
 export const SceneSpawnMap: KeyValuePair<Scene> = {
   [Interactable.BalconyEntrance]: Scene.Balcony,
   [Interactable.ApartmentEntrance]: Scene.Apartment,
-  [Interactable.WorldEntrance]: Scene.Bayes,
+  [Interactable.WorldEntrance]: Scene.Third,
+  [Interactable.FourthEntrance]: Scene.Fourth,
+  [Interactable.ThirdEntrance]: Scene.Third,
 };
 
 export const NPCAnimationMap = {

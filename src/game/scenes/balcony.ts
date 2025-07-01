@@ -49,8 +49,7 @@ const balcony = async () => {
     context.z(2),
   ]);
 
-  const player = new Player(scale);
-
+  const player = new Player(scale, context.vec2(0, -1));
   balcony.add(player.character);
 
   const ui = new UI((isUiToggled: boolean) => {

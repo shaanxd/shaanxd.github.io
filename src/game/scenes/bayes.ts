@@ -3,25 +3,28 @@ import Boundary from "../objects/boundary";
 import Player from "../objects/player";
 import UI from "../objects/ui";
 import { getSpriteScale } from "../utils/sprite";
-import { PlayerSpawn } from "../enums";
+import { PlayerSpawn, Scene } from "../enums";
 import { Point } from "../types";
 import Door from "../objects/door";
 import ElevatorDoor from "../objects/elevatorDoor";
 import layering from "../controls/layering";
+import { SceneSpawnMap } from "../constants";
 
-const bayes = async () => {
-  const scale = await getSpriteScale("bayes", "width");
+const bayes = (floor: Scene.Third | Scene.Fourth) => async () => {
+  const floorParam = floor.toLowerCase();
 
-  const data = await (await fetch("./maps/bayes.json")).json();
+  const scale = await getSpriteScale(floorParam, "width");
+
+  const data = await (await fetch(`./maps/${floorParam}.json`)).json();
 
   /** Initialize map object */
   const map = context.add([
-    context.sprite("bayes"),
+    context.sprite(floorParam),
     context.pos(0, 0),
     context.scale(scale),
   ]);
 
-  const player = new Player(scale);
+  const player = new Player(scale, context.vec2(0, -1));
   map.add(player.character);
 
   const ui = new UI((isUiToggled: boolean) => {
@@ -55,6 +58,22 @@ const bayes = async () => {
           map.add(door.door);
         }
         break;
+      }
+      case "interactables": {
+        for (const point of layer.objects) {
+          const interactable = Boundary.create(point);
+          map.add(interactable);
+
+          if (!point.name) {
+            continue;
+          }
+          if (point.name.includes("entrance") && SceneSpawnMap[point.name]) {
+            interactable.onCollide("player", () => {
+              context.go(SceneSpawnMap[point.name]);
+            });
+          }
+          break;
+        }
       }
     }
   }
