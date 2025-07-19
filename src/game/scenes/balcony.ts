@@ -9,6 +9,7 @@ import UI from "../objects/ui";
 import NPC from "../objects/npc";
 import Boundary from "../objects/boundary";
 import Vehicle from "../objects/vehicle";
+import { getCameraPositionWithBounds } from "../utils/camera";
 
 const spawn = (point: Point, map: GameObj) => {
   const isHeadingRight = point.name === "vehicle-spawn-left";
@@ -123,15 +124,7 @@ const balcony = async () => {
   }
 
   const camera = context.onUpdate("player", () => {
-    const left = window.innerWidth / 2;
-    const right = map.width * scale - window.innerWidth / 2;
-
-    const playerPosX = player.character.pos.x * scale;
-
-    const x = Math.max(left, Math.min(playerPosX, right));
-    const y = map.height * scale - window.innerHeight / 2;
-
-    context.camPos(context.vec2(x, y));
+    getCameraPositionWithBounds(map, player, scale);
   });
 
   context.onSceneLeave(() => {

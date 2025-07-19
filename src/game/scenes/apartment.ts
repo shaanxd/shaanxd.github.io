@@ -23,6 +23,7 @@ import { getSpriteScale } from "../utils/sprite";
 import StateService from "../state";
 import Character from "../objects/character";
 import Boundary from "../objects/boundary";
+import { getCameraPositionWithBounds } from "../utils/camera";
 
 type ApartmentParams = {
   spawn: PlayerSpawn;
@@ -132,20 +133,7 @@ const apartment = async ({
   }
 
   const camera = context.onUpdate("player", () => {
-    const left = window.innerWidth / 2;
-    const right = map.width * scale - left;
-
-    const playerPosX = player.character.pos.x * scale;
-
-    const top = window.innerHeight / 2;
-    const bottom = map.height * scale - top;
-
-    const playerPosY = player.character.pos.y * scale;
-
-    const x = Math.max(left, Math.min(playerPosX, right));
-    const y = Math.max(top, Math.min(playerPosY, bottom));
-
-    context.camPos(context.vec2(x, y));
+    getCameraPositionWithBounds(map, player, scale);
   });
 
   context.onSceneLeave(() => {
@@ -157,11 +145,11 @@ const apartment = async ({
     return;
   }
 
-  player.state.isInDialog = true;
-
   const hasIntrod = StateService.get().introduced;
   const introDialog =
     dialog[hasIntrod ? Interaction.IntroBrief : Interaction.Intro];
+
+  player.state.isInDialog = true;
 
   context.wait(0.5, () => {
     createDialogBox(

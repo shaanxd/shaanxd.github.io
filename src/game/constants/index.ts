@@ -37,6 +37,8 @@ export const DIALOG_BOX_OPTIONS_HEIGHT = 8;
 export const UI_SCALE = 3;
 export const FONT_SIZE = 9;
 
+export const CAMERA_SPAN = 0.1;
+
 export const LayerOrder = {
   [Layer.CharactersForeground]: 4,
   [Layer.Player]: 3,

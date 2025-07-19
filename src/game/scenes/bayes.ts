@@ -9,6 +9,7 @@ import Door from "../objects/door";
 import ElevatorDoor from "../objects/elevatorDoor";
 import layering from "../controls/layering";
 import { SceneSpawnMap } from "../constants";
+import { getCameraPositionWithBounds } from "../utils/camera";
 
 const bayes = (floor: Scene.Third | Scene.Fourth) => async () => {
   const floorParam = floor.toLowerCase();
@@ -79,20 +80,7 @@ const bayes = (floor: Scene.Third | Scene.Fourth) => async () => {
   }
 
   const camera = context.onUpdate("player", () => {
-    const left = window.innerWidth / 2;
-    const right = map.width * scale - left;
-
-    const playerPosX = player.character.pos.x * scale;
-
-    const top = window.innerHeight / 2;
-    const bottom = map.height * scale - top;
-
-    const playerPosY = player.character.pos.y * scale;
-
-    const x = Math.max(left, Math.min(playerPosX, right));
-    const y = Math.max(top, Math.min(playerPosY, bottom));
-
-    context.camPos(context.vec2(x, y));
+    getCameraPositionWithBounds(map, player, scale);
   });
 
   context.onSceneLeave(() => {
