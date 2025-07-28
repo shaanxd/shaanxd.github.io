@@ -133,7 +133,7 @@ const apartment = async ({
   }
 
   const camera = context.onUpdate("player", () => {
-    getCameraPositionWithBounds(map, player, scale);
+    getCameraPositionWithBounds(map, player, scale, true);
   });
 
   context.onSceneLeave(() => {

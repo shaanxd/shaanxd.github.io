@@ -6,7 +6,9 @@ import { CAMERA_SPAN } from "../constants";
 export const getCameraPositionWithBounds = (
   map: GameObj,
   player: Player,
-  scale: number
+  scale: number,
+  isFirstTime: boolean,
+  onFirstTime?: () => void
 ) => {
   const camPos = context.camPos();
 
@@ -23,10 +25,17 @@ export const getCameraPositionWithBounds = (
   const x = Math.max(left, Math.min(playerPosX, right));
   const y = Math.max(top, Math.min(playerPosY, bottom));
 
-  context.camPos(
-    context.vec2(
+  let position;
+
+  if (!isFirstTime) {
+    position = context.vec2(x, y);
+    onFirstTime?.();
+  } else {
+    position = context.vec2(
       context.lerp(camPos.x, x, CAMERA_SPAN),
       context.lerp(camPos.y, y, CAMERA_SPAN)
-    )
-  );
+    );
+  }
+
+  context.camPos(position);
 };

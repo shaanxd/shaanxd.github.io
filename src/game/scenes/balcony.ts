@@ -123,8 +123,12 @@ const balcony = async () => {
     }
   }
 
+  let isCameraLoaded = false;
+
   const camera = context.onUpdate("player", () => {
-    getCameraPositionWithBounds(map, player, scale);
+    getCameraPositionWithBounds(map, player, scale, isCameraLoaded, () => {
+      isCameraLoaded = true;
+    });
   });
 
   context.onSceneLeave(() => {

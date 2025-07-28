@@ -26,6 +26,7 @@ export enum PlayerSpawn {
   PlayerApartment = "player-apartment",
   PlayerBalcony = "player-balcony",
   PlayerBayes = "player-bayes",
+  PlayerBayesStairs = "player-bayes-stairs",
 }
 
 export enum PlayerMove {
