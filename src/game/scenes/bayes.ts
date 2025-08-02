@@ -24,7 +24,7 @@ const bayes =
   async ({ spawn }: BayesParams = defaultParams) => {
     const floorParam = floor.toLowerCase();
 
-    const scale = await getSpriteScale(floorParam, "width");
+    const scale = await getSpriteScale(floorParam);
 
     const data = await (await fetch(`./maps/${floorParam}.json`)).json();
 
@@ -82,7 +82,7 @@ const bayes =
             if (point.name.includes("entrance") && nextScene) {
               const params = [Scene.Third, Scene.Fourth].includes(nextScene)
                 ? { spawn: PlayerSpawn.PlayerBayesStairs }
-                : { spawn: PlayerSpawn.PlayerApartmentWorld};
+                : { spawn: PlayerSpawn.PlayerApartmentWorld };
               interactable.onCollide("player", () => {
                 context.go(SceneSpawnMap[point.name], params);
               });
