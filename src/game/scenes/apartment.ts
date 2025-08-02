@@ -52,7 +52,7 @@ const apartment = async ({
 
   const ui = new UI((isUiToggled: boolean) => {
     player.state.isInDialog = isUiToggled;
-  });
+  }, false);
 
   for (const layer of data.layers) {
     switch (layer.name) {
@@ -141,11 +141,15 @@ const apartment = async ({
     camera.cancel();
   });
 
-  if (spawn !== PlayerSpawn.PlayerApartment) {
+
+  const hasInitialised = StateService.get().initialised;
+
+  if (spawn !== PlayerSpawn.PlayerApartment || hasInitialised) {
     return;
   }
 
   const hasIntrod = StateService.get().introduced;
+
   const introDialog =
     dialog[hasIntrod ? Interaction.IntroBrief : Interaction.Intro];
 
@@ -157,6 +161,7 @@ const apartment = async ({
       introDialog,
       () => {
         player.state.isInDialog = false;
+        StateService.set({initialised: true, introduced: true})
       },
       { player }
     );

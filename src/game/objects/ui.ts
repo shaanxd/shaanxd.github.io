@@ -21,6 +21,7 @@ import {
   PortraitAnimation,
   Socials,
   Credits,
+  Scene,
 } from "../enums";
 import { getSpriteMetadata } from "../utils/sprite";
 import { Point, TileMapJsonData } from "../types";
@@ -48,11 +49,14 @@ class UI {
   infoSpriteData!: SpriteData;
   infoJsonData!: TileMapJsonData;
 
+  shouldShowHomeButton: boolean;
+
   onUiToggle: (_: boolean) => void;
 
-  constructor(onUiToggle: (_: boolean) => void) {
+  constructor(onUiToggle: (_: boolean) => void, shouldShowHomeButton: boolean = true) {
     this.load();
     this.onUiToggle = onUiToggle;
+    this.shouldShowHomeButton = shouldShowHomeButton
   }
 
   async load() {
@@ -72,6 +76,10 @@ class UI {
       { type: UIButtonType.Settings, onClick: () => this.toggleSettings() },
       { type: UIButtonType.Information, onClick: () => this.toggleInfo() },
     ];
+
+    if (this.shouldShowHomeButton) {
+      options.push({type: UIButtonType.Home, onClick: () => this.goHome()})
+    }
 
     const buttonWidth = options.length * PIXELS_PER_TILE;
     const paddingWidth = (options.length + 1) * BUTTON_PADDING;
@@ -129,6 +137,10 @@ class UI {
     }
     this.isInfoVisible = !this.isInfoVisible;
     this.onUiToggle(this.isInfoVisible);
+  }
+
+  goHome() {
+    context.go(Scene.Apartment)
   }
 
   createSettings() {

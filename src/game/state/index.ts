@@ -3,6 +3,7 @@ import { getFromStorage, putToStorage } from "../utils/storage";
 
 type State = {
   introduced: boolean;
+  initialised: boolean;
   locale: Locales;
   sfxEnabled: boolean;
   musicEnabled: boolean;
@@ -19,6 +20,7 @@ const StateService = (function () {
         state = JSON.parse(fromStorage);
       } else {
         state = {
+          initialised: false,
           introduced: false,
           locale: Locales.En,
           sfxEnabled: false,
@@ -28,6 +30,7 @@ const StateService = (function () {
       }
       /** Kinda disable music always to not be loud. */
       state.musicEnabled = false;
+      state.initialised = false;
     },
     set(updatedState: Partial<State>) {
       state = {
