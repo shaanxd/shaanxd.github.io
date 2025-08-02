@@ -24,6 +24,7 @@ export enum PlayerAnimation {
 export enum PlayerSpawn {
   Player = "player",
   PlayerApartment = "player-apartment",
+  PlayerApartmentWorld = 'player-apartment-world',
   PlayerBalcony = "player-balcony",
   PlayerBayes = "player-bayes",
   PlayerBayesStairs = "player-bayes-stairs",

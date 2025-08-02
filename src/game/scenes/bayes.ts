@@ -82,12 +82,11 @@ const bayes =
             if (point.name.includes("entrance") && nextScene) {
               const params = [Scene.Third, Scene.Fourth].includes(nextScene)
                 ? { spawn: PlayerSpawn.PlayerBayesStairs }
-                : {};
+                : { spawn: PlayerSpawn.PlayerApartmentWorld};
               interactable.onCollide("player", () => {
                 context.go(SceneSpawnMap[point.name], params);
               });
             }
-            break;
           }
         }
       }
