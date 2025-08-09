@@ -1,7 +1,7 @@
 import { GameObj } from "kaplay";
 import { SceneSpawnMap } from "../constants";
 import context from "../context";
-import { Interactable, NPCAnimation, PlayerSpawn } from "../enums";
+import { Interactable, NPCAnimation, PlayerSpawn, Scene } from "../enums";
 import Player from "../objects/player";
 import { Point } from "../types";
 import { getSpriteScale } from "../utils/sprite";
@@ -10,6 +10,7 @@ import NPC from "../objects/npc";
 import Boundary from "../objects/boundary";
 import Vehicle from "../objects/vehicle";
 import { getCameraPositionWithBounds } from "../utils/camera";
+import { setUrlSearchParam } from "../utils/url";
 
 const spawn = (point: Point, map: GameObj) => {
   const isHeadingRight = point.name === "vehicle-spawn-left";
@@ -33,7 +34,9 @@ const spawn = (point: Point, map: GameObj) => {
 };
 
 const balcony = async () => {
-  const scale = await getSpriteScale("balcony-bg");
+  setUrlSearchParam("scene", Scene.Balcony);
+
+  let scale = await getSpriteScale("balcony-bg");
 
   const data = await (await fetch("./maps/balcony.json")).json();
 
@@ -129,6 +132,19 @@ const balcony = async () => {
     getCameraPositionWithBounds(map, player, scale, isCameraLoaded, () => {
       isCameraLoaded = true;
     });
+  });
+
+  context.onResize(async () => {
+    scale = await getSpriteScale("balcony-bg");
+    const vectorScale = context.vec2(scale, scale);
+    map.scale = vectorScale;
+    balcony.scale = vectorScale;
+    player.setScale(scale);
+  });
+
+  context.onSceneLeave(() => {
+    ui.destroy();
+    camera.cancel();
   });
 
   context.onSceneLeave(() => {

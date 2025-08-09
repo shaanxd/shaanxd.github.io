@@ -16,6 +16,7 @@ import { getSpriteParamsWithOffset, getSpritesheetParams } from "./utils/tiles";
 import balcony from "./scenes/balcony";
 import { NPCAnimationMap } from "./constants";
 import bayes from "./scenes/bayes";
+import { getUrlSearchParam } from "./utils/url";
 
 const init = () => {
   context.loadSprite("apartment", "./backgrounds/apartment.png");
@@ -202,11 +203,11 @@ const init = () => {
   context.scene(Scene.Third, bayes(Scene.Third));
   context.scene(Scene.Fourth, bayes(Scene.Fourth));
 
-  context.go(Scene.Apartment);
-
-  window.addEventListener("resize", () => {
-    location.reload();
+  const scene = getUrlSearchParam("scene", Scene.Apartment, (value) => {
+    return !!(Scene as Record<string, string>)[value];
   });
+
+  context.go(scene as Scene);
 };
 
 export default init;

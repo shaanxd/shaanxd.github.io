@@ -11,6 +11,7 @@ import {
   Character as CharacterType,
   Interaction,
   PlayerSpawn,
+  Scene,
 } from "../enums";
 import dialog from "../dialog";
 import Animal from "../objects/animal";
@@ -24,6 +25,7 @@ import StateService from "../state";
 import Character from "../objects/character";
 import Boundary from "../objects/boundary";
 import { getCameraPositionWithBounds } from "../utils/camera";
+import { setUrlSearchParam } from "../utils/url";
 
 type ApartmentParams = {
   spawn: PlayerSpawn;
@@ -36,7 +38,9 @@ const DEFAULT_APARTMENT_PARAMS: ApartmentParams = {
 const apartment = async ({
   spawn,
 }: ApartmentParams = DEFAULT_APARTMENT_PARAMS) => {
-  const scale = await getSpriteScale("apartment");
+  setUrlSearchParam("scene", Scene.Apartment);
+
+  let scale = await getSpriteScale("apartment");
 
   const data = await (await fetch("./maps/apartment.json")).json();
 
@@ -136,11 +140,16 @@ const apartment = async ({
     getCameraPositionWithBounds(map, player, scale, true);
   });
 
+  context.onResize(async () => {
+    scale = await getSpriteScale("apartment");
+    map.scale = context.vec2(scale, scale);
+    player.setScale(scale);
+  });
+
   context.onSceneLeave(() => {
     ui.destroy();
     camera.cancel();
   });
-
 
   const hasInitialised = StateService.get().initialised;
 
@@ -161,7 +170,7 @@ const apartment = async ({
       introDialog,
       () => {
         player.state.isInDialog = false;
-        StateService.set({initialised: true, introduced: true})
+        StateService.set({ initialised: true, introduced: true });
       },
       { player }
     );

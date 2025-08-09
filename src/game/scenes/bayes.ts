@@ -10,6 +10,7 @@ import ElevatorDoor from "../objects/elevatorDoor";
 import layering from "../controls/layering";
 import { SceneSpawnMap } from "../constants";
 import { getCameraPositionWithBounds } from "../utils/camera";
+import { setUrlSearchParam } from "../utils/url";
 
 type BayesParams = {
   spawn: PlayerSpawn;
@@ -22,9 +23,10 @@ const defaultParams: BayesParams = {
 const bayes =
   (floor: Scene.Third | Scene.Fourth) =>
   async ({ spawn }: BayesParams = defaultParams) => {
+    setUrlSearchParam("scene", floor);
     const floorParam = floor.toLowerCase();
 
-    const scale = await getSpriteScale(floorParam);
+    let scale = await getSpriteScale(floorParam);
 
     const data = await (await fetch(`./maps/${floorParam}.json`)).json();
 
@@ -98,6 +100,17 @@ const bayes =
       getCameraPositionWithBounds(map, player, scale, isCameraLoaded, () => {
         isCameraLoaded = true;
       });
+    });
+
+    context.onResize(async () => {
+      scale = await getSpriteScale(floorParam);
+      map.scale = context.vec2(scale, scale);
+      player.setScale(scale);
+    });
+
+    context.onSceneLeave(() => {
+      ui.destroy();
+      camera.cancel();
     });
 
     context.onSceneLeave(() => {

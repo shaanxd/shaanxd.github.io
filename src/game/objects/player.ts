@@ -285,6 +285,10 @@ class Player {
     );
   }
 
+  setScale(scale: number) {
+    this.scale = scale;
+  }
+
   stopAnim() {
     this.idle();
   }
