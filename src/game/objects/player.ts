@@ -323,6 +323,7 @@ class Player {
       context.sprite("emotes", { frame: EmoteMap[type] }),
       context.pos(0, CHARACTER_EMOTE_POSITION),
       context.anchor("bot"),
+      context.scale(0.75),
       context.opacity(0),
     ]);
 

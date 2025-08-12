@@ -1,10 +1,5 @@
 import context from "../context";
-import {
-  Character as CharacterType,
-  Emotes,
-  PlayerAnimation,
-  Scene,
-} from "../enums";
+import { Emotes, PlayerAnimation, Scene } from "../enums";
 import Player from "../objects/player";
 import { getSpriteScale } from "../utils/sprite";
 import { getCameraPositionWithBounds } from "../utils/camera";

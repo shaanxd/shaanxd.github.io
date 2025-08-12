@@ -8,7 +8,7 @@ class Arrow {
     return context.make([
       context.pos(
         point.x + point.width / 2 - 7.5,
-        point.y - DOOR_HEIGHT - (ArrowOffset[point.name] || 0)
+        point.y - DOOR_HEIGHT - (ArrowOffset[point.name!] || 0)
       ),
       context.sprite("arrows", { anim: type }),
       context.z(LayerOrder[Layer.Arrows]),
