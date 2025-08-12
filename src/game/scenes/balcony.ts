@@ -109,15 +109,11 @@ const balcony = async () => {
           const interactable = Boundary.create(point);
           map.add(interactable);
 
-          if (point.name) {
+          if (point.name && point.name === Interactable.ApartmentEntrance) {
             interactable.onCollide("player", () => {
-              if (point.name === Interactable.ApartmentEntrance) {
-                context.go(SceneSpawnMap[point.name], {
-                  spawn: PlayerSpawn.PlayerBalcony,
-                });
-              } else {
-                /** Implement dialog details */
-              }
+              context.go(SceneSpawnMap[point.name], {
+                spawn: PlayerSpawn.PlayerBalcony,
+              });
             });
           }
         }

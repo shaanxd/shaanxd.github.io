@@ -19,6 +19,7 @@ const sanitize = (name) => {
           "characters",
           "placements",
           "texts",
+          "items",
         ].includes(name)
       )
       /** Only pick up the required elements */
@@ -49,6 +50,7 @@ const sanitize = (name) => {
   "maps/balcony.json",
   "maps/third.json",
   "maps/fourth.json",
+  "maps/landing.json",
   "ui/info.json",
   "ui/settings.json",
 ].forEach((file) => {

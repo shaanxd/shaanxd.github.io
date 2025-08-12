@@ -8,7 +8,9 @@ import context from "../context";
 import layering from "../controls/layering";
 import {
   Animal as AnimalType,
+  Arrows,
   Character as CharacterType,
+  Emotes,
   Interaction,
   PlayerSpawn,
   Scene,
@@ -26,6 +28,7 @@ import Character from "../objects/character";
 import Boundary from "../objects/boundary";
 import { getCameraPositionWithBounds } from "../utils/camera";
 import { setUrlSearchParam } from "../utils/url";
+import Arrow from "../objects/arrow";
 
 type ApartmentParams = {
   spawn: PlayerSpawn;
@@ -75,6 +78,7 @@ const apartment = async ({
             continue;
           }
           if (point.name.includes("entrance") && SceneSpawnMap[point.name]) {
+            map.add(Arrow.create(point, Arrows.Down));
             interactable.onCollide("player", () => {
               context.go(SceneSpawnMap[point.name]);
             });
@@ -131,6 +135,12 @@ const apartment = async ({
           const character = Character.create(point);
           character.use(layering(player.character));
           map.add(character);
+
+          if (point.name === CharacterType.Hafsah) {
+            character.onCollide("player", () => {
+              player.emote(Emotes.Heart);
+            });
+          }
         }
       }
     }
@@ -164,17 +174,17 @@ const apartment = async ({
 
   player.state.isInDialog = true;
 
-  context.wait(0.5, () => {
-    createDialogBox(
-      CharacterType.Shahid,
-      introDialog,
-      () => {
-        player.state.isInDialog = false;
-        StateService.set({ initialised: true, introduced: true });
-      },
-      { player }
-    );
-  });
+  await context.wait(0.5);
+
+  createDialogBox(
+    CharacterType.Shahid,
+    introDialog,
+    () => {
+      player.state.isInDialog = false;
+      StateService.set({ initialised: true, introduced: true });
+    },
+    { player }
+  );
 };
 
 export default apartment;

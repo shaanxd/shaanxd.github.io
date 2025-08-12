@@ -1,4 +1,5 @@
 export enum Scene {
+  Landing = "Landing",
   Apartment = "Apartment",
   Balcony = "Balcony",
   Third = "Third",
@@ -19,6 +20,8 @@ export enum PlayerAnimation {
   WalkSide = "WalkSide",
   Read = "Read",
   CheckPhone = "CheckPhone",
+  SitLeft = "SitLeft",
+  SitRight = "SitRight",
 }
 
 export enum PlayerSpawn {
@@ -28,6 +31,7 @@ export enum PlayerSpawn {
   PlayerBalcony = "player-balcony",
   PlayerBayes = "player-bayes",
   PlayerBayesStairs = "player-bayes-stairs",
+  PlayerLanding = "player-landing",
 }
 
 export enum PlayerMove {
@@ -43,6 +47,7 @@ export enum Layer {
   CharactersForeground = "CharactersForeground",
   Doors = "Doors",
   VerticalDoors = "VerticalDoors",
+  Arrows = "Arrows",
 }
 
 export enum Interactable {
@@ -151,4 +156,18 @@ export enum Credits {
   Music = "music",
   Flags = "flags",
   Library = "library",
+}
+
+export enum Emotes {
+  Heart = "heart",
+}
+
+export enum Arrows {
+  Down = "down",
+}
+
+export enum AnimatedItems {
+  Waterfall = "waterfall",
+  Campfire = "campfire",
+  BoatRight = "boat-right",
 }

@@ -13,6 +13,8 @@ import {
   UIButtonType,
   Socials,
   Credits,
+  Emotes,
+  Arrows,
 } from "../enums";
 import { KeyValuePair } from "../types";
 
@@ -22,6 +24,7 @@ export const PLAYER_DEFAULT_SPEED = 50;
 
 export const CHARACTER_HEIGHT = PIXELS_PER_TILE * 1.5;
 export const CHARACTER_WIDTH = PIXELS_PER_TILE;
+export const CHARACTER_EMOTE_POSITION = -CHARACTER_HEIGHT * 0.75;
 
 export const DOOR_HEIGHT = PIXELS_PER_TILE * 2;
 export const DOOR_WIDTH = PIXELS_PER_TILE;
@@ -40,6 +43,7 @@ export const FONT_SIZE = 9;
 export const CAMERA_SPAN = 0.1;
 
 export const LayerOrder = {
+  [Layer.Arrows]: 10,
   [Layer.CharactersForeground]: 4,
   [Layer.Player]: 3,
   [Layer.CharactersBackground]: 2,
@@ -135,4 +139,19 @@ export const CreditLinkMap = {
   [Credits.Library]: "https://kaplayjs.com/",
   [Credits.Music]: "https://pixabay.com/users/grand_project-19033897/",
   [Credits.Tileset]: "https://limezu.itch.io/",
+};
+
+export const EmoteMap = {
+  [Emotes.Heart]: 0,
+};
+
+export const ArrowMap = {
+  [Arrows.Down]: [0, 5],
+};
+
+export const ArrowOffset: Record<string, number> = {
+  [Interactable.ApartmentEntrance]: 5,
+  [Interactable.WorldEntrance]: 10,
+  [Interactable.ThirdEntrance]: 0,
+  [Interactable.FourthEntrance]: 0,
 };

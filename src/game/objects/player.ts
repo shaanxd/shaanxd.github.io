@@ -9,14 +9,16 @@ import {
 } from "kaplay";
 
 import {
+  CHARACTER_EMOTE_POSITION,
   CHARACTER_HEIGHT,
   CHARACTER_WIDTH,
+  EmoteMap,
   IdleAnimations,
   LayerOrder,
   PLAYER_DEFAULT_SPEED,
 } from "../constants";
 import context from "../context";
-import { Character, Layer, PlayerAnimation } from "../enums";
+import { Character, Emotes, Layer, PlayerAnimation } from "../enums";
 
 interface PlayerState {
   speed: number;
@@ -43,13 +45,26 @@ const PLAYER_DEFAULT_STATE: PlayerState = {
 class Player {
   character: GameObj<SpriteComp | PosComp>;
   hitbox: GameObj;
+  emoticon: GameObj | undefined;
   state: PlayerState;
   idleTimer: TimerController | undefined;
+  emoteTimer: TimerController | undefined;
   scale: number;
 
-  constructor(scale: number, direction?: Vec2) {
+  isMovementDisabled: boolean;
+  isBoreDisabled: boolean;
+
+  constructor(
+    scale: number,
+    direction?: Vec2,
+    isMovementDisabled: boolean = false,
+    isBoreDisabled: boolean = false
+  ) {
     this.scale = scale;
     this.state = PLAYER_DEFAULT_STATE;
+
+    this.isMovementDisabled = isMovementDisabled;
+    this.isBoreDisabled = isBoreDisabled;
 
     if (direction) {
       this.state.direction = direction;
@@ -70,7 +85,10 @@ class Player {
     this.character.onMouseRelease((btn) => this.onMouseRelease(btn));
 
     this.idle();
-    this.bore();
+
+    if (!this.isBoreDisabled) {
+      this.bore();
+    }
   }
 
   private sprite() {
@@ -102,7 +120,7 @@ class Player {
   }
 
   private onMouseDown(btn: MouseButton) {
-    if (btn !== "left") {
+    if (this.isMovementDisabled || btn !== "left") {
       return;
     }
     const state = this.state;
@@ -158,7 +176,7 @@ class Player {
   }
 
   private onMouseRelease(btn: MouseButton) {
-    if (btn !== "left") {
+    if (this.isMovementDisabled || btn !== "left") {
       return;
     }
     this.state.isMouseMoving = false;
@@ -169,7 +187,7 @@ class Player {
   private onKeyDown(key: string) {
     const state = this.state;
 
-    if (state.isInDialog || state.isMouseMoving) {
+    if (state.isInDialog || state.isMouseMoving || this.isMovementDisabled) {
       return;
     }
 
@@ -231,7 +249,7 @@ class Player {
   }
 
   private onKeyRelease(key: Key) {
-    if (!["d", "s", "w", "a"].includes(`${key}`)) {
+    if (this.isMovementDisabled || !["d", "s", "w", "a"].includes(`${key}`)) {
       return;
     }
 
@@ -241,7 +259,10 @@ class Player {
     this.bore();
   }
 
-  private onDestroy() {}
+  private onDestroy() {
+    this.idleTimer?.cancel();
+    this.emoteTimer?.cancel();
+  }
 
   idle() {
     let animation = PlayerAnimation.IdleDown;
@@ -287,6 +308,58 @@ class Player {
 
   setScale(scale: number) {
     this.scale = scale;
+  }
+
+  async emote(type: Emotes, destroy: boolean = true) {
+    if (this.state.isEmoting) {
+      return;
+    }
+
+    if (this.emoticon) {
+      this.emoticon.destroy?.();
+    }
+
+    this.emoticon = this.character.add([
+      context.sprite("emotes", { frame: EmoteMap[type] }),
+      context.pos(0, CHARACTER_EMOTE_POSITION),
+      context.anchor("bot"),
+      context.opacity(0),
+    ]);
+
+    this.state.isEmoting = true;
+
+    await context.tween(
+      0,
+      1,
+      0.3,
+      (val) => (this.emoticon!.opacity = val),
+      context.easings.easeInOutSine
+    );
+
+    const amplitude = 2; // how far up/down
+    const speed = 4; // how fast
+
+    let t = 0;
+
+    this.emoticon.onUpdate(() => {
+      t += context.dt() * speed;
+      this.emoticon!.pos.y = CHARACTER_EMOTE_POSITION + Math.sin(t) * amplitude;
+    });
+
+    if (!destroy) {
+      return;
+    }
+
+    await context.wait(1);
+    await context.tween(
+      1,
+      0,
+      0.3,
+      (val) => (this.emoticon!.opacity = val),
+      context.easings.easeInOutSine
+    );
+    this.emoticon?.destroy();
+    this.state.isEmoting = false;
   }
 
   stopAnim() {

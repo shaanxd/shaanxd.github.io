@@ -3,7 +3,7 @@ import Boundary from "../objects/boundary";
 import Player from "../objects/player";
 import UI from "../objects/ui";
 import { getSpriteScale } from "../utils/sprite";
-import { PlayerSpawn, Scene } from "../enums";
+import { Arrows, PlayerSpawn, Scene } from "../enums";
 import { Point } from "../types";
 import Door from "../objects/door";
 import ElevatorDoor from "../objects/elevatorDoor";
@@ -11,6 +11,7 @@ import layering from "../controls/layering";
 import { SceneSpawnMap } from "../constants";
 import { getCameraPositionWithBounds } from "../utils/camera";
 import { setUrlSearchParam } from "../utils/url";
+import Arrow from "../objects/arrow";
 
 type BayesParams = {
   spawn: PlayerSpawn;
@@ -82,6 +83,7 @@ const bayes =
             }
             const nextScene = SceneSpawnMap[point.name];
             if (point.name.includes("entrance") && nextScene) {
+              map.add(Arrow.create(point, Arrows.Down));
               const params = [Scene.Third, Scene.Fourth].includes(nextScene)
                 ? { spawn: PlayerSpawn.PlayerBayesStairs }
                 : { spawn: PlayerSpawn.PlayerApartmentWorld };

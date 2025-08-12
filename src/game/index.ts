@@ -1,6 +1,8 @@
 import {
   Animal,
   AnimalAnimation,
+  AnimatedItems,
+  Arrows,
   Character,
   DoorAnimation,
   NPCAnimation,
@@ -12,13 +14,16 @@ import {
 import context from "./context";
 
 import apartment from "./scenes/apartment";
-import { getSpriteParamsWithOffset, getSpritesheetParams } from "./utils/tiles";
 import balcony from "./scenes/balcony";
-import { NPCAnimationMap } from "./constants";
 import bayes from "./scenes/bayes";
+import landing from "./scenes/landing";
+
+import { getSpriteParamsWithOffset, getSpritesheetParams } from "./utils/tiles";
+import { ArrowMap, NPCAnimationMap } from "./constants";
 import { getUrlSearchParam } from "./utils/url";
 
 const init = () => {
+  context.loadSprite("landing", "./backgrounds/landing.png");
   context.loadSprite("apartment", "./backgrounds/apartment.png");
   context.loadSprite("balcony-bg", "./backgrounds/balcony-bg.png");
   context.loadSprite("balcony-fg", "./backgrounds/balcony-fg.png");
@@ -51,6 +56,8 @@ const init = () => {
             { name: PlayerAnimation.WalkSide, values: [224, 229] },
             { name: PlayerAnimation.Read, values: [784, 795] },
             { name: PlayerAnimation.CheckPhone, values: [675, 680] },
+            { name: PlayerAnimation.SitLeft, values: [454, 459] },
+            { name: PlayerAnimation.SitRight, values: [448, 453] },
           ],
           { speed: 10, loop: true }
         )
@@ -96,6 +103,63 @@ const init = () => {
         { name: DoorAnimation.Closed, values: [7, 0] },
       ],
       { speed: 10 }
+    ),
+  });
+
+  context.loadSprite("waterfall", "/objects/waterfall.png", {
+    ...getSpritesheetParams(
+      6,
+      1,
+      [{ name: AnimatedItems.Waterfall, values: [0, 5] }],
+      { speed: 10, loop: true }
+    ),
+  });
+
+  [1, 8].map((value) => {
+    const name = `floating-rock-${value}`;
+    context.loadSprite(name, `/objects/${name}.png`, {
+      ...getSpritesheetParams(8, 1, [{ name: name, values: [0, 7] }], {
+        speed: 10,
+        loop: true,
+      }),
+    });
+  });
+
+  [2, 3].map((value) => {
+    const name = `fishes-${value}`;
+    context.loadSprite(name, `/objects/${name}.png`, {
+      ...getSpritesheetParams(14, 1, [{ name: name, values: [0, 13] }], {
+        speed: 10,
+        loop: true,
+      }),
+    });
+  });
+
+  new Array(3).fill("-").map((_, value) => {
+    const name = `butterfly-${value + 1}`;
+    context.loadSprite(name, `/objects/${name}.png`, {
+      ...getSpritesheetParams(4, 1, [{ name: name, values: [0, 3] }], {
+        speed: 10,
+        loop: true,
+      }),
+    });
+  });
+
+  context.loadSprite("campfire", "/objects/campfire.png", {
+    ...getSpritesheetParams(
+      6,
+      1,
+      [{ name: AnimatedItems.Campfire, values: [0, 5] }],
+      { speed: 10, loop: true }
+    ),
+  });
+
+  context.loadSprite("boat-right", "/objects/boat-right.png", {
+    ...getSpritesheetParams(
+      8,
+      1,
+      [{ name: AnimatedItems.BoatRight, values: [0, 7] }],
+      { speed: 10, loop: true }
     ),
   });
 
@@ -150,22 +214,27 @@ const init = () => {
       { loop: true }
     ),
   });
+
   context.loadSprite("dialog-box", "./ui/dialog-box.png", {
     sliceX: 3,
     sliceY: 1,
   });
+
   context.loadSprite("settings", "./ui/settings.png", {
     sliceX: 1,
     sliceY: 1,
   });
+
   context.loadSprite("info", "./ui/info.png", {
     sliceX: 1,
     sliceY: 1,
   });
+
   context.loadSprite("flags", "./ui/flags.png", {
     sliceX: 5,
     sliceY: 1,
   });
+
   context.loadSprite("toggles", "./ui/toggles.png", {
     sliceX: 1,
     sliceY: 2,
@@ -193,11 +262,29 @@ const init = () => {
     sliceY: 1,
   });
 
+  context.loadSprite("emotes", "./ui/emotes.png", {
+    sliceX: 1,
+    sliceY: 1,
+  });
+
+  context.loadSprite("arrows", "./ui/arrows.png", {
+    ...getSpritesheetParams(
+      6,
+      1,
+      Object.values(Arrows).map((key) => ({
+        name: key,
+        values: ArrowMap[key],
+      })),
+      { loop: true }
+    ),
+  });
+
   context.setBackground(context.Color.fromHex("#311047"));
 
   context.loadFont("medodica", "fonts/medodica.otf");
   context.loadMusic("bgm", "./sounds/bgm.mp3");
 
+  context.scene(Scene.Landing, landing);
   context.scene(Scene.Apartment, apartment);
   context.scene(Scene.Balcony, balcony);
   context.scene(Scene.Third, bayes(Scene.Third));

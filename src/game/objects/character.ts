@@ -4,9 +4,12 @@ import { PlayerAnimation } from "../enums";
 import { CHARACTER_WIDTH } from "../constants";
 
 class Character {
-  static create(point: Point) {
+  static create(
+    point: Point,
+    anim: PlayerAnimation = PlayerAnimation.IdleDown
+  ) {
     return context.make([
-      context.sprite(point.name!, { anim: PlayerAnimation.IdleDown }),
+      context.sprite(point.name!, { anim }),
       context.area({
         shape: new context.Rect(context.vec2(0, 0), CHARACTER_WIDTH, 5),
       }),
