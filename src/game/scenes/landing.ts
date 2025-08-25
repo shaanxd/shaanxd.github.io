@@ -6,6 +6,7 @@ import { getCameraPositionWithBounds } from "../utils/camera";
 import { setUrlSearchParam } from "../utils/url";
 import AnimatedItem from "../objects/animatedItem";
 import Character from "../objects/character";
+import Title from "../objects/title";
 
 const landing = async () => {
   setUrlSearchParam("scene", Scene.Landing);
@@ -57,6 +58,8 @@ const landing = async () => {
       }
     }
   }
+
+  Title.create();
 
   const camera = context.onUpdate("player", () => {
     getCameraPositionWithBounds(map, player, scale, true);

@@ -6,4 +6,5 @@ export default kaplay({
   debugKey: "`",
   canvas: document.getElementById("canvas") as HTMLCanvasElement,
   pixelDensity: devicePixelRatio,
+  crisp: true,
 });
