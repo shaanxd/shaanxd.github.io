@@ -1,50 +1,24 @@
-# React + TypeScript + Vite
+# My Developer Journey :)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to my personal developer portfolio! This project serves as a central hub to present my creativity and skills as a developer and instead of your average Kanban board I thought of building something fun! :)
 
-Currently, two official plugins are available:
+## Built Using
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Kaplay](https://kaplayjs.com/) – Underlying game engine based on JavaScript, TypeScript
+- [TypeScript](https://www.typescriptlang.org/) – You know why ;)
+- [Tiled](https://www.mapeditor.org/) - For creating maps out of tilesheets.
 
-## Expanding the ESLint configuration
+## Credits
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Development itself was the easier part. Big thanks to the incredible set of people who have crafted the stuff necessary to make this happen.
 
-- Configure the top-level `parserOptions` property like this:
+- [Limezu](https://limezu.itch.io/) – for an awesome curated list of assets
+- [DaFluffyPotato](https://dafluffypotato.itch.io/) for flag icons
+- [Kaplay.js](https://kaplayjs.com/) – for their awesome game engine
+- [Grand Project](https://pixabay.com/users/grand_project-19033897/) for the background music.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Working Demo
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Check out the live version [here](https://shaanxd.github.io).
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+![Demo GIF](public/demo/demo.gif)

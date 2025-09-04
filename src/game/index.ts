@@ -282,10 +282,6 @@ const init = () => {
   context.setBackground(context.Color.fromHex("#311047"));
 
   context.loadFont("medodica", "fonts/medodica.otf");
-  context.loadFont("pixeloperator", "fonts/pixeloperatorbold.ttf", {
-    filter: "nearest",
-    outline: 3,
-  });
 
   context.loadMusic("bgm", "./sounds/bgm.mp3");
 
